@@ -22,5 +22,9 @@ def hello():
 def pod():
     return os.getenv('HOSTNAME', 'not-set')
 
+@app.route("/health")
+def health():
+    return "ok"
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', threaded=True)
