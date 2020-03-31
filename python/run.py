@@ -5,6 +5,7 @@ import random
 import logging
 import os
 from flask import Flask
+from flask import render_template
 
 app = Flask(__name__)
 log = logging.getLogger('werkzeug')
@@ -15,8 +16,7 @@ hex_number = str(hex(random_number))[2:]
 
 @app.route("/")
 def hello():
-    return "<h1 style=color:#%s>Hello python</h1>" \
-           "<h2>ID: %s</h2>" % (hex_number, hex_number)
+    return render_template('index.html', hex_number=hex_number)
 
 @app.route("/pod/")
 def pod():
