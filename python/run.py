@@ -3,6 +3,7 @@
 
 import random
 import logging
+import os
 from flask import Flask
 
 app = Flask(__name__)
@@ -16,6 +17,10 @@ hex_number = str(hex(random_number))[2:]
 def hello():
     return "<h1 style=color:#%s>Hello python</h1>" \
            "<h2>ID: %s</h2>" % (hex_number, hex_number)
+
+@app.route("/pod/")
+def pod():
+    return os.getenv('HOSTNAME', 'not-set')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', threaded=True)
