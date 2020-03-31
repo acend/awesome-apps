@@ -3,7 +3,7 @@ LABEL maintainer="labz"
 
 RUN apk --no-cache add python3 py3-cryptography && \
     pip3 install --upgrade pip && \
-    pip3 install flask --no-cache-dir && \
+    pip3 install flask flask_sqlalchemy --no-cache-dir && \
     adduser -D web
 
 COPY run.py /
