@@ -11,4 +11,4 @@ RUN apk --no-cache add python3 py3-cryptography py3-mysqlclient && \
 WORKDIR /app
 
 USER web
-CMD [ "python3", "/app/run.py" ]
+CMD sleep 10; python3 /app/run.py
