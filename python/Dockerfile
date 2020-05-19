@@ -4,7 +4,7 @@ LABEL maintainer="labz"
 COPY app/ /app
 RUN apk --no-cache add python3 py3-cryptography py3-mysqlclient && \
     pip3 install --upgrade pip && \
-    pip3 install flask flask_sqlalchemy --no-cache-dir && \
+    pip3 install flask flask_sqlalchemy prometheus_flask_exporter --no-cache-dir && \
     adduser -D web && \
     chown web /app 
 

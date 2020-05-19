@@ -8,6 +8,7 @@ import sqlite3
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from prometheus_flask_exporter import PrometheusMetrics
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 database_file = "sqlite:///{}".format(os.path.join(current_dir, "hellos.db"))
@@ -22,6 +23,8 @@ log.setLevel(logging.ERROR)
 
 random_number = random.randint(1048576,16777215)
 hex_number = str(hex(random_number))[2:]
+
+metrics = PrometheusMetrics(app, static_labels={"app_version": "1.0.0", "app_name" : "acend-awesome-python"})
 
 class Hello(db.Model):
     id = db.Column(db.Integer, primary_key=True)
