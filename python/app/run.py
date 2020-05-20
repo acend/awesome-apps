@@ -24,7 +24,7 @@ log.setLevel(logging.ERROR)
 random_number = random.randint(1048576,16777215)
 hex_number = str(hex(random_number))[2:]
 
-metrics = PrometheusMetrics(app, static_labels={"app_version": "1.0.0", "app_name" : "acend-awesome-python"})
+metrics = PrometheusMetrics(app, static_labels={"app_version": os.getenv('APP_VERSION', '1.0.0'), "app_name" : "acend-awesome-python"})
 
 class Hello(db.Model):
     id = db.Column(db.Integer, primary_key=True)
