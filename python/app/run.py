@@ -44,10 +44,14 @@ def index():
 
 @app.route("/hellos", methods=['GET'])
 def get_hellos():
-    result = []
-    for hello in Hello.query.all():
-        result.append({'id': hello.id, 'name': hello.name, 'frontend': hello.frontend, 'created': hello.created})
-    return jsonify(result)
+    try:
+        result = []
+        for hello in Hello.query.all():
+            result.append({'id': hello.id, 'name': hello.name, 'frontend': hello.frontend, 'created': hello.created})
+        return jsonify(result)
+    except Exception as e:
+        print("Failed fetch hellos")
+        print(e)
 
 @app.route("/hellos/<string:name>", methods=['POST'])
 def add_hello(name):
@@ -64,6 +68,7 @@ def add_hello(name):
     except Exception as e:
         print("Failed to add a hello")
         print(e)
+        return e
 
 @app.route("/pod/")
 def pod():

@@ -72,6 +72,8 @@
 		}); // (document).ready
 
 		function reloadHelloList() {
+			var result = $('#result');
+			result.removeClass('invalid');
 			// reload hello list
 			$.ajax(
 					'hellos',
@@ -95,6 +97,7 @@
 									});
 						}
 					}).fail(function() {
+						result.addClass('invalid').text('Error reading Hellos!');
 				//console.log("error");
 			});
 		}
