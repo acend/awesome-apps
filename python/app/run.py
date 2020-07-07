@@ -12,9 +12,11 @@ from prometheus_flask_exporter import PrometheusMetrics
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 database_file = "sqlite:///{}".format(os.path.join(current_dir, "hellos.db"))
+database_config = os.getenv('MYSQL_URI', database_file)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('MYSQL_URI', database_file)
+app.config['SQLALCHEMY_DATABASE_URI'] = database_config
+print("Using DB: ", database_config)
 
 db = SQLAlchemy(app)
 
