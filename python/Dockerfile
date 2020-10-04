@@ -1,6 +1,8 @@
 FROM alpine
 LABEL maintainer="acend"
 
+EXPOSE 5000
+
 COPY app/ /app
 RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
     pip3 install --upgrade pip && \
