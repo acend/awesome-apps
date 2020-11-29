@@ -1,0 +1,27 @@
+{% extends "base.jinja" %}
+
+{%- block content %}
+    <ul class="step">
+	    <li class="step-item {{ 'active' if lab==5 }}">
+    		<a href="#" class="tooltip" data-tooltip="Lab 5">Lab 5</a>
+  		</li>
+  	  	<li class="step-item {{ 'active' if lab==6 }}">
+    		<a href="#" class="tooltip" data-tooltip="Lab 6">Lab 6</a>
+  		</li>
+		<li class="step-item {{ 'active' if lab==7 }}">
+    		<a href="#" class="tooltip" data-tooltip="Lab 7">Lab 7</a>
+  		</li>
+		<li class="step-item {{ 'active' if lab==8 }}">
+    		<a href="#" class="tooltip" data-tooltip="Lab 8">Lab 8</a>
+  		</li>
+		<li class="step-item {{ 'active' if lab==9 }}">
+    		<a href="#" class="tooltip" data-tooltip="Lab 9">Lab 9</a>
+  		</li>
+		<li class="step-item {{ 'active' if lab==10 }}">
+    		<a href="#" class="tooltip" data-tooltip="Lab 10">Lab 10</a>
+  		</li>	
+	</ul>
+{%- endblock %}
+
+{%- block scripts %}
+{%- endblock %}
