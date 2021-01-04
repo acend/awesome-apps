@@ -1,26 +1,35 @@
 {% extends "base.jinja" %}
 
 {%- block content %}
-    <ul class="step">
-	    <li class="step-item {{ 'active' if lab==5 }}">
-    		<a href="#" class="tooltip" data-tooltip="Lab 5">Lab 5</a>
-  		</li>
-  	  	<li class="step-item {{ 'active' if lab==6 }}">
-    		<a href="#" class="tooltip" data-tooltip="Lab 6">Lab 6</a>
-  		</li>
-		<li class="step-item {{ 'active' if lab==7 }}">
-    		<a href="#" class="tooltip" data-tooltip="Lab 7">Lab 7</a>
-  		</li>
-		<li class="step-item {{ 'active' if lab==8 }}">
-    		<a href="#" class="tooltip" data-tooltip="Lab 8">Lab 8</a>
-  		</li>
-		<li class="step-item {{ 'active' if lab==9 }}">
-    		<a href="#" class="tooltip" data-tooltip="Lab 9">Lab 9</a>
-  		</li>
-		<li class="step-item {{ 'active' if lab==10 }}">
-    		<a href="#" class="tooltip" data-tooltip="Lab 10">Lab 10</a>
-  		</li>	
-	</ul>
+		<div class="hero-sm bg-gray">
+  			<div class="hero-body">
+    			<h1>Lab status</h1>
+    			<p>Result of your own progress ...</p>
+  			</div>
+		</div>
+		{% for lab in labs %}
+		<div class="column col-8">
+		<div class="tile">
+			<div class="tile-icon">
+				<figure class="avatar avatar-lg mr-2" data-initial="L{{ loop.index + 5 }}"></i></figure>
+			</div>
+
+			<div class="tile-content">
+				<!--<p class="tile-title">{{ lab.name }}</p>-->
+				<p class="tile-title">{{ lab.desc }}</p>
+
+				<p>
+				{% for task in lab.tasks %}
+					<span class="label label-rounded {{ 'label-success' if task.status=="done" else 'label-error' }}">
+				    {{ task.name }}
+					</span>
+				{% endfor %}
+				</p>
+			</div>
+
+		</div>
+		</div>
+		{% endfor %}
 {%- endblock %}
 
 {%- block scripts %}

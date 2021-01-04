@@ -4,7 +4,7 @@
 import random
 import logging
 import os
-import sqlite3
+import sys
 from libs.progress import Progress
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify
@@ -19,17 +19,19 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_config
 print("Using DB: ", database_config)
 
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
+logging.basicConfig(stream=sys.stdout,
+                    level=logging.INFO,
+                    format="%(asctime)s %(levelname)-5s: %(message)s")
 
-random_number = random.randint(1048576,16777215)
+random_number = random.randint(1048576, 16777215)
 hex_number = str(hex(random_number))[2:]
 
-labels = {"app_version": os.getenv('APP_VERSION', '1.0.0'), 
-          "app_name" : "acend-awesome-python"}
+labels = {"app_version": os.getenv('APP_VERSION', '1.0.0'),
+          "app_name": "acend-awesome-python"}
 metrics = PrometheusMetrics(app, static_labels=labels)
 
 db = SQLAlchemy(app)
+
 
 class Hello(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,22 +42,29 @@ class Hello(db.Model):
     def __repr__(self):
         return "<Name: {}>".format(self.title)
 
+
 db.create_all()
+
 
 @app.route("/")
 def index():
     return render_template('index.jinja', hex_number=hex_number)
+
 
 @app.route("/hellos", methods=['GET'])
 def get_hellos():
     try:
         result = []
         for hello in Hello.query.all():
-            result.append({'id': hello.id, 'name': hello.name, 'frontend': hello.frontend, 'created': hello.created})
+            result.append({'id': hello.id,
+                           'name': hello.name,
+                           'frontend': hello.frontend,
+                           'created': hello.created})
         return jsonify(result)
     except Exception as e:
         print("Failed fetch hellos")
         print(e)
+
 
 @app.route("/hellos/<string:name>", methods=['POST'])
 def add_hello(name):
@@ -68,25 +77,29 @@ def add_hello(name):
             resp.status_code = 200
             return resp
         else:
-            return not_found()
+            return None
     except Exception as e:
         print("Failed to add a hello")
         print(e)
         return e
 
+
 @app.route("/pod/")
 def pod():
     return os.getenv('HOSTNAME', 'not-set')
+
 
 @app.route("/health")
 def health():
     return "ok"
 
+
 @app.route("/progress")
 def progress():
     progress = Progress()
-    progress.checkProgress(Hello)
-    return render_template("progress.jinja", lab=progress.lab)
+    status = progress.checkProgress(db=Hello)
+    return render_template("progress.jinja", labs=status)
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', threaded=True)

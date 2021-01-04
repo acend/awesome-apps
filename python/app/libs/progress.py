@@ -1,94 +1,165 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
+import sys
+import logging
 from kubernetes.client.rest import ApiException
 from libs.cluster import KubeCluster
+
+logging.basicConfig(stream=sys.stdout,
+                    level=logging.INFO,
+                    format="%(asctime)s %(levelname)-5s: %(message)s")
+
 
 class Progress():
 
     def __init__(self):
-        self.lab = 5        # as this container will deployed in lab 6
-                            # we are guessing all is done until lab 5
         self.db = None
         self.kube = None
         self.deploy_name = "example-web-python"
-
 
     def checkProgress(self, db):
         try:
             self.kube = KubeCluster()
             self.db = db
-        except:
-            pass
+        except Exception as error:
+            logging.error("Error in checkProgress: %s" % error)
         else:
-            self.checkLab06()
+            return self.checkLab06(labs=[])
 
-
-    def checkLab06(self):
-        # check if deployment exists
+    def checkLab06(self, labs):
+        lab = {"name": "", "desc": "", "tasks": []}
+        lab["name"] = "Lab 6"
+        lab["desc"] = "Scaling"
+        task1 = {"name": "Deployment", "status": "open"}
+        task2 = {"name": "Replicas", "status": "open"}
         try:
+            logging.info("Checking: %s" % lab["name"])
             self.kube.readDeployment(self.deploy_name)
+            task1["status"] = "done"
+
             replicas = self.kube.readDeploymentScale(self.deploy_name)
-            print("%s" % replicas.spec.replicas)
-            if replicas.spec.replicas != 3:
-                raise ApiException
+            if replicas.spec.replicas == 3:
+                task2["status"] = "done"
         except ApiException as error:
-            self.lab = 5
-            print("Error in processing lab 6: %s" % error)
-        else:
-            self.lab = 6
-            self.checkLab07()
+            logging.error("Error in processing lab 6: %s" % error)
 
+        lab["tasks"].append(task1)
+        lab["tasks"].append(task2)
+        labs.append(lab)
+        return self.checkLab07(labs)
 
-    def checkLab07(self):
+    def checkLab07(self, labs):
         # check if we having a history file
+        lab = {"name": "", "desc": "", "tasks": []}
+        lab["name"] = "Lab 7"
+        lab["desc"] = "Troubleshooting (badge can toggle)"
+        task1 = {"name": "Local access", "status": "open"}
         try:
-            podLog = self.kube.readPodLogs(self.deploy_name)
-            podLog.index("127.0.0.1")
-        except ValueError:
-            self.lab = 6
-        except ApiException:
-            self.lab = 6
-        else:
-            self.lab = 7
-            self.checkLab08()
+            logging.info("Checking: %s" % lab["name"])
+            podLogList = self.kube.readPodLogs(self.deploy_name)
+            for podLog in podLogList:
+                if podLog.find("127.0.0.1") > 0:
+                    task1["status"] = "done"
+        except ApiException as error:
+            logging.error("Error in processing lab 7: %s" % error)
+        finally:
+            del podLogList
 
+        lab["tasks"].append(task1)
+        labs.append(lab)
+        return self.checkLab08(labs)
 
-    def checkLab08(self):
+    def checkLab08(self, labs):
         # check if database exists
+        lab = {"name": "", "desc": "", "tasks": []}
+        lab["name"] = "Lab 8"
+        lab["desc"] = "Database"
+        task1 = {"name": "Service", "status": "open"}
+        task2 = {"name": "Deployment", "status": "open"}
+        task3 = {"name": "Dump import", "status": "open"}
         try:
+            logging.info("Checking: %s" % lab["name"])
             self.kube.readService("mariadb")
+            task1["status"] = "done"
+
             self.kube.readDeployment("mariadb")
-            self.db.query.filter_by(name='test').first()
-        except ApiException:
-            self.lab = 7
-        except:
-            self.lab = 7
-        else:
-            self.lab = 8
-            self.checkLab09()
+            task2["status"] = "done"
 
+            if self.db.query.filter_by(name='Daniel').first():
+                task3["status"] = "done"
+        except ApiException as error:
+            logging.error("Error in processing lab 8: %s" % error)
+        except Exception as error:
+            logging.error("Error in processing lab 8: %s" % error)
 
-    def checkLab09(self):
+        lab["tasks"].append(task1)
+        lab["tasks"].append(task2)
+        lab["tasks"].append(task3)
+        labs.append(lab)
+        return self.checkLab09(labs)
+
+    def checkLab09(self, labs):
         # check for volume claims
+        lab = {"name": "", "desc": "", "tasks": []}
+        lab["name"] = "Lab 9"
+        lab["desc"] = "Persistent storage"
+        task1 = {"name": "Created", "status": "open"}
+        task2 = {"name": "Mounted", "status": "open"}
         try:
+            logging.info("Checking: %s" % lab["name"])
             self.kube.readVolumeClaim("mariadb-data")
-        except ApiException:
-            self.lab = 8
-        else:
-            self.lab = 9
-            self.checkLab10()
+            task1["status"] = "done"
 
+            deploy = self.kube.readDeployment("mariadb")
+            if deploy.spec.template.spec.volumes:
+                for vol in deploy.spec.template.spec.volumes:
+                    if vol.name == "mariadb-persistent-storage":
+                        task2["status"] = "done"
+        except ApiException as error:
+            logging.error("Error in processing lab 9: %s" % error)
 
-    def checkLab10(self):
+        lab["tasks"].append(task1)
+        lab["tasks"].append(task2)
+        labs.append(lab)
+        return self.checkLab10(labs)
+
+    def checkLab10(self, labs):
         # check statefulsets, daemonsets, jobs, configmaps ...
+        lab = {"name": "", "desc": "", "tasks": []}
+        lab["name"] = "Lab 10"
+        lab["desc"] = "Additional concepts"
+        task1 = {"name": "1-StatefulSets", "status": "open"}
+        task2 = {"name": "3-CronJobs and Jobs", "status": "open"}
+        task3 = {"name": "4-ConfigMap: ConfigMap", "status": "open"}
+        task4 = {"name": "4-ConfigMap: Deployment", "status": "open"}
+        task5 = {"name": "7-Sidecar containers", "status": "open"}
         try:
-            self.kube.readStatefulSet("nginx-cluster") # Do not delete this in lab!
+            logging.info("Checking: %s" % lab["name"])
+            self.kube.readStatefulSet("nginx-cluster")
+            task1["status"] = "done"
+
             self.kube.readJob("database-dump")
-            self.kube.readConfigMap("javaconfig")
+            task2["status"] = "done"
+
+            self.kube.readConfigMap("javaconfiguration")
+            task3["status"] = "done"
+
             self.kube.readDeployment("spring-boot-example")
-            self.kube.readPodLogs("mariadb", "mysqld-exporter")
-        except ApiException:
-            self.lab = 9
-        else:
-            self.lab = 10
+            task4["status"] = "done"
+
+            deploy = self.kube.readDeployment("mariadb")
+            if deploy.spec.template.spec.containers:
+                for pod in deploy.spec.template.spec.containers:
+                    if pod.name == "mysqld-exporter":
+                        task5["status"] = "done"
+        except ApiException as error:
+            logging.error("Error in processing lab 10: %s" % error)
+
+        lab["tasks"].append(task1)
+        lab["tasks"].append(task2)
+        lab["tasks"].append(task3)
+        lab["tasks"].append(task4)
+        lab["tasks"].append(task5)
+        labs.append(lab)
+        return labs

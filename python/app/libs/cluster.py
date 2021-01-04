@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-import os, kubernetes, sys, configparser
+import kubernetes
+
 
 class KubeCluster():
 
@@ -13,43 +14,41 @@ class KubeCluster():
         self.betaV1 = kubernetes.client.ExtensionsV1beta1Api()
         self.batchV1 = kubernetes.client.BatchV1Api()
 
-
-    def getNamespace(self, nsFile = ""):
+    def getNamespace(self, nsFile=""):
         if not nsFile:
             nsFile = "/run/secrets/kubernetes.io/serviceaccount/namespace"
 
         with open(nsFile, "r") as reader:
             return reader.read()
 
-
     def readDeployment(self, name):
         return self.appsV1.read_namespaced_deployment(name, self.ns)
-
 
     def readDeploymentScale(self, name):
         return self.appsV1.read_namespaced_deployment_scale(name, self.ns)
 
-
     def readService(self, name):
-        return self.coreV1.read_namespaced_secret(name, self.ns)
+        return self.coreV1.read_namespaced_service(name, self.ns)
 
-
-    def readPodLogs(self, name, container=""):
-        return self.coreV1.read_namespaced_pod_log(name, self.ns, 
-                                                   container=container)    
-
+    def readPodLogs(self, labelName):
+        logList = []
+        label = "app=%s" % labelName
+        for pod in self.coreV1.list_namespaced_pod(self.ns,
+                                                   label_selector=label).items:
+            log = self.coreV1.read_namespaced_pod_log(pod.metadata.name,
+                                                      self.ns)
+            logList.append(log)
+        return logList
 
     def readVolumeClaim(self, name):
-        return self.coreV1.read_namespaced_persistent_volume_claim(name, self.ns)
+        return self.coreV1.read_namespaced_persistent_volume_claim(name,
+                                                                   self.ns)
 
-    
     def readStatefulSet(self, name):
         return self.appsV1.read_namespaced_stateful_set(name, self.ns)
 
-
     def readConfigMap(self, name):
         return self.coreV1.read_namespaced_config_map(name, self.ns)
-
 
     def readJob(self, name):
         return self.batchV1.read_namespaced_job(name, self.ns)
