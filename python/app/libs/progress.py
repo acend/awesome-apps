@@ -24,8 +24,20 @@ class Progress():
             self.db = db
         except Exception as error:
             logging.error("Error in checkProgress: %s" % error)
-        else:
+            return []
+
+        if self.checkPermission():
             return self.checkLab06(labs=[])
+        else:
+            return []
+
+    def checkPermission(self):
+        try:
+            self.kube.listPods()
+            return True
+        except ApiException as error:
+            logging.error("Error with permissions: %s" % error)
+            return False
 
     def checkLab06(self, labs):
         lab = {"name": "", "desc": "", "tasks": []}

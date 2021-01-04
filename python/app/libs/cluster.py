@@ -21,6 +21,9 @@ class KubeCluster():
         with open(nsFile, "r") as reader:
             return reader.read()
 
+    def listPods(self):
+        return self.coreV1.list_namespaced_pod(self.ns)
+
     def readDeployment(self, name):
         return self.appsV1.read_namespaced_deployment(name, self.ns)
 

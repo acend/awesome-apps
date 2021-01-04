@@ -4,7 +4,14 @@
 		<div class="hero-sm bg-gray">
   			<div class="hero-body">
     			<h1>Lab status</h1>
-    			<p>Result of your own progress ...</p>
+    			<p>Result of your own progress.</p>
+				{% if labs|length %}
+				<p>Permission for this page are looking good! Let's go ...</p>				
+				{% else %}
+				<p>To activate, you have to create this rolebinding in your namespace:</p>
+				<code>kubectl create rolebinding progress --clusterrole=view --serviceaccount=your-namespace:default -n your-namespace</code>
+				{% endif %}
+				<p></p>
   			</div>
 		</div>
 		{% for lab in labs %}
