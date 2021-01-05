@@ -10,6 +10,8 @@ logging.basicConfig(stream=sys.stdout,
                     level=logging.INFO,
                     format="%(asctime)s %(levelname)-5s: %(message)s")
 
+job_template = {"name": "", "desc": "", "tasks": []}
+
 
 class Progress():
 
@@ -39,8 +41,24 @@ class Progress():
             logging.error("Permissions error: %s" % error)
             return False
 
+    def calcPercentage(self, labs):
+        """
+        expect: list of dict
+        return: integer
+        """
+        task_sum = 0
+        task_done = 0
+        if not labs:
+            return 0
+        for lab in labs:
+            for task in lab["tasks"]:
+                task_sum += 1
+                if task["status"] == "done":
+                    task_done += 1
+        return int(task_done / task_sum * 100)
+
     def checkLab06(self, labs):
-        lab = {"name": "", "desc": "", "tasks": []}
+        lab = job_template.copy()
         lab["name"] = "Lab 6"
         lab["desc"] = "Scaling"
         task1 = {"name": "Deployment", "status": "open"}
@@ -63,7 +81,7 @@ class Progress():
 
     def checkLab07(self, labs):
         # check if we having a history file
-        lab = {"name": "", "desc": "", "tasks": []}
+        lab = job_template.copy()
         lab["name"] = "Lab 7"
         lab["desc"] = "Troubleshooting (badge can toggle)"
         task1 = {"name": "Local access", "status": "open"}
@@ -84,7 +102,7 @@ class Progress():
 
     def checkLab08(self, labs):
         # check if database exists
-        lab = {"name": "", "desc": "", "tasks": []}
+        lab = job_template.copy()
         lab["name"] = "Lab 8"
         lab["desc"] = "Database"
         task1 = {"name": "Service", "status": "open"}
@@ -113,7 +131,7 @@ class Progress():
 
     def checkLab09(self, labs):
         # check for volume claims
-        lab = {"name": "", "desc": "", "tasks": []}
+        lab = job_template.copy()
         lab["name"] = "Lab 9"
         lab["desc"] = "Persistent storage"
         task1 = {"name": "Created", "status": "open"}
@@ -138,7 +156,7 @@ class Progress():
 
     def checkLab10(self, labs):
         # check statefulsets, daemonsets, jobs, configmaps ...
-        lab = {"name": "", "desc": "", "tasks": []}
+        lab = job_template.copy()
         lab["name"] = "Lab 10"
         lab["desc"] = "Additional concepts"
         task1 = {"name": "1-StatefulSets", "status": "open"}

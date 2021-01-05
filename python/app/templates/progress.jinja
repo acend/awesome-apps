@@ -5,6 +5,9 @@
   			<div class="hero-body">
     			<h1>Lab status</h1>
     			<p>Overview of your own progress.</p>
+				<div class="bar bar">
+  					<div class="bar-item" role="progressbar" style="width:25%;" aria-valuenow="{{ perc }}" aria-valuemin="0" aria-valuemax="100"></div>
+				</div>
 				{% if labs|length %}
 				<p>Permissions for this page are looking good! Let's go...</p>				
 				{% else %}

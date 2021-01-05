@@ -98,7 +98,8 @@ def health():
 def progress():
     progress = Progress()
     status = progress.checkProgress(db=Hello)
-    return render_template("progress.jinja", labs=status)
+    perc = progress.calcPercentage(status)
+    return render_template("progress.jinja", labs=status, perc=perc)
 
 
 if __name__ == "__main__":
