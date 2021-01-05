@@ -6,7 +6,7 @@
     			<h1>Lab status</h1>
     			<p>Overview of your own progress.</p>
 				{% if labs|length %}
-				<p>Permission for this page are looking good! Let's go ...</p>				
+				<p>Permissions for this page are looking good! Let's go...</p>				
 				{% else %}
 				<p>To activate, you have to create this rolebinding in your namespace:</p>
 				<code>kubectl create rolebinding progress --clusterrole=view --serviceaccount=your-namespace:default -n your-namespace</code>
