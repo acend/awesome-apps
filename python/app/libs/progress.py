@@ -36,7 +36,7 @@ class Progress():
             self.kube.listPods()
             return True
         except ApiException as error:
-            logging.error("Error with permissions: %s" % error)
+            logging.error("Permissions error: %s" % error)
             return False
 
     def checkLab06(self, labs):
