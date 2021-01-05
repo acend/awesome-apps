@@ -9,7 +9,7 @@
 				<p>Permissions for this page are looking good! Let's go...</p>				
 				{% else %}
 				<p>To activate, you have to create this rolebinding in your namespace:</p>
-				<code>kubectl create rolebinding progress --clusterrole=view --serviceaccount=your-namespace:default -n your-namespace</code>
+				<code>kubectl create rolebinding progress --clusterrole=view --serviceaccount=&#60;namespace&#62;:default --namespace=&#60;namespace&#62;</code>
 				{% endif %}
 				<p></p>
   			</div>
