@@ -166,7 +166,8 @@ class Progress():
         task3 = {"name": "CronJobs and Jobs", "status": "open"}
         task4 = {"name": "ConfigMap: Created", "status": "open"}
         task5 = {"name": "ConfigMap: Mounted", "status": "open"}
-        task6 = {"name": "Sidecar containers", "status": "open"}
+        task6 = {"name": "InitContainer", "status": "open"}
+        task7 = {"name": "Sidecar containers", "status": "open"}
         logging.info("Checking: %s" % lab["name"])
 
         replicas = self.kube.readStatefulSet("nginx-cluster")
@@ -191,6 +192,13 @@ class Progress():
                     if vol.name == "config-volume":
                         task5["status"] = "done"
 
+        deploy = self.kube.readDeployment(self.deploy_name)
+        if deploy:
+            if deploy.spec.template.spec.init_containers:
+                for pod in deploy.spec.template.spec.init_containers:
+                    if pod.name == "wait-for-db":
+                        task6["status"] = "done"
+
         deploy = self.kube.readDeployment("mariadb")
         if not deploy:  # openshift case
             logging.info("10.6 openshift case")
@@ -200,7 +208,7 @@ class Progress():
             if deploy.spec.template.spec.containers:
                 for pod in deploy.spec.template.spec.containers:
                     if pod.name == "mysqld-exporter":
-                        task6["status"] = "done"
+                        task7["status"] = "done"
 
         lab["tasks"].append(task1)
         lab["tasks"].append(task2)
@@ -208,5 +216,6 @@ class Progress():
         lab["tasks"].append(task4)
         lab["tasks"].append(task5)
         lab["tasks"].append(task6)
+        lab["tasks"].append(task7)
         labs.append(lab)
         return labs
