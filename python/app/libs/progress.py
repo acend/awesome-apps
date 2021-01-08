@@ -3,7 +3,6 @@
 
 import sys
 import logging
-from kubernetes.client.rest import ApiException
 from libs.cluster import KubeCluster
 
 logging.basicConfig(stream=sys.stdout,
@@ -34,11 +33,9 @@ class Progress():
             return []
 
     def checkPermission(self):
-        try:
-            self.kube.listPods()
+        if self.kube.listPods():
             return True
-        except ApiException as error:
-            logging.error("Permissions error: %s" % error)
+        else:
             return False
 
     def calcPercentage(self, labs):
@@ -62,17 +59,18 @@ class Progress():
         lab["name"] = "Lab 6"
         lab["desc"] = "Scaling"
         task1 = {"name": "Deployment", "status": "open"}
-        task2 = {"name": "Replicas", "status": "open"}
-        try:
-            logging.info("Checking: %s" % lab["name"])
-            self.kube.readDeployment(self.deploy_name)
+        task2 = {"name": "Scaled", "status": "open"}
+        logging.info("Checking: %s" % lab["name"])
+
+        # task 1
+        if self.kube.readDeployment(self.deploy_name):
             task1["status"] = "done"
 
-            replicas = self.kube.readDeploymentScale(self.deploy_name)
+        # task 2
+        replicas = self.kube.readDeploymentScale(self.deploy_name)
+        if replicas:
             if replicas.spec.replicas == 3:
                 task2["status"] = "done"
-        except ApiException as error:
-            logging.error("Error in processing lab 6: %s" % error)
 
         lab["tasks"].append(task1)
         lab["tasks"].append(task2)
@@ -85,15 +83,14 @@ class Progress():
         lab["name"] = "Lab 7"
         lab["desc"] = "Troubleshooting (badge can toggle)"
         task1 = {"name": "Local access", "status": "open"}
-        try:
-            logging.info("Checking: %s" % lab["name"])
-            podLogList = self.kube.readPodLogs(self.deploy_name)
+        logging.info("Checking: %s" % lab["name"])
+
+        podLogList = self.kube.readPodLogs(
+                        "app=%s" % self.deploy_name)
+        if podLogList:
             for podLog in podLogList:
                 if podLog.find("127.0.0.1") > 0:
                     task1["status"] = "done"
-        except ApiException as error:
-            logging.error("Error in processing lab 7: %s" % error)
-        finally:
             del podLogList
 
         lab["tasks"].append(task1)
@@ -108,20 +105,22 @@ class Progress():
         task1 = {"name": "Service", "status": "open"}
         task2 = {"name": "Deployment", "status": "open"}
         task3 = {"name": "Dump import", "status": "open"}
-        try:
-            logging.info("Checking: %s" % lab["name"])
-            self.kube.readService("mariadb")
+        logging.info("Checking: %s" % lab["name"])
+
+        if self.kube.readService("mariadb"):
             task1["status"] = "done"
 
-            self.kube.readDeployment("mariadb")
+        if self.kube.readDeployment("mariadb"):
+            task2["status"] = "done"
+        elif self.kube.readPodByLabel("deploymentconfig=mariadb"):
+            logging.info("8.2 openshift case")
             task2["status"] = "done"
 
+        try:
             if self.db.query.filter_by(name='Daniel').first():
                 task3["status"] = "done"
-        except ApiException as error:
-            logging.error("Error in processing lab 8: %s" % error)
-        except Exception as error:
-            logging.error("Error in processing lab 8: %s" % error)
+        except Exception:
+            pass
 
         lab["tasks"].append(task1)
         lab["tasks"].append(task2)
@@ -136,18 +135,21 @@ class Progress():
         lab["desc"] = "Persistent storage"
         task1 = {"name": "Created", "status": "open"}
         task2 = {"name": "Mounted", "status": "open"}
-        try:
-            logging.info("Checking: %s" % lab["name"])
-            self.kube.readVolumeClaim("mariadb-data")
+        logging.info("Checking: %s" % lab["name"])
+
+        if self.kube.readVolumeClaim("mariadb-data"):
             task1["status"] = "done"
 
-            deploy = self.kube.readDeployment("mariadb")
+        deploy = self.kube.readDeployment("mariadb")
+        if not deploy:  # openshift case
+            logging.info("9.2 openshift case")
+            deploy = self.kube.readReplicationControllerByPodLabel(
+                        "deploymentconfig=mariadb")
+        if deploy:
             if deploy.spec.template.spec.volumes:
                 for vol in deploy.spec.template.spec.volumes:
                     if vol.name == "mariadb-persistent-storage":
                         task2["status"] = "done"
-        except ApiException as error:
-            logging.error("Error in processing lab 9: %s" % error)
 
         lab["tasks"].append(task1)
         lab["tasks"].append(task2)
@@ -159,37 +161,52 @@ class Progress():
         lab = {"name": "", "desc": "", "tasks": []}
         lab["name"] = "Lab 10"
         lab["desc"] = "Additional concepts"
-        task1 = {"name": "1-StatefulSets", "status": "open"}
-        task2 = {"name": "3-CronJobs and Jobs", "status": "open"}
-        task3 = {"name": "4-ConfigMap: ConfigMap", "status": "open"}
-        task4 = {"name": "4-ConfigMap: Deployment", "status": "open"}
-        task5 = {"name": "7-Sidecar containers", "status": "open"}
-        try:
-            logging.info("Checking: %s" % lab["name"])
-            self.kube.readStatefulSet("nginx-cluster")
+        task1 = {"name": "StatefulSets: Created", "status": "open"}
+        task2 = {"name": "StatefulSets: Scaled", "status": "open"}
+        task3 = {"name": "CronJobs and Jobs", "status": "open"}
+        task4 = {"name": "ConfigMap: Created", "status": "open"}
+        task5 = {"name": "ConfigMap: Mounted", "status": "open"}
+        task6 = {"name": "Sidecar containers", "status": "open"}
+        logging.info("Checking: %s" % lab["name"])
+
+        replicas = self.kube.readStatefulSet("nginx-cluster")
+        if replicas:
             task1["status"] = "done"
+            if replicas.spec.replicas == 3:
+                task2["status"] = "done"
 
-            self.kube.readJob("database-dump")
-            task2["status"] = "done"
-
-            self.kube.readConfigMap("javaconfiguration")
+        if self.kube.readJob("database-dump"):
             task3["status"] = "done"
 
-            self.kube.readDeployment("spring-boot-example")
+        if self.kube.readConfigMap("javaconfiguration"):
             task4["status"] = "done"
 
-            deploy = self.kube.readDeployment("mariadb")
+        deploy = self.kube.readDeployment("spring-boot-example")
+        if not deploy:  # openshift case
+            logging.info("10.5 openshift case")
+            deploy = self.kube.readDeployment(self.deploy_name)
+        if deploy:
+            if deploy.spec.template.spec.volumes:
+                for vol in deploy.spec.template.spec.volumes:
+                    if vol.name == "config-volume":
+                        task5["status"] = "done"
+
+        deploy = self.kube.readDeployment("mariadb")
+        if not deploy:  # openshift case
+            logging.info("10.6 openshift case")
+            deploy = self.kube.readReplicationControllerByPodLabel(
+                        "deploymentconfig=mariadb")
+        if deploy:
             if deploy.spec.template.spec.containers:
                 for pod in deploy.spec.template.spec.containers:
                     if pod.name == "mysqld-exporter":
-                        task5["status"] = "done"
-        except ApiException as error:
-            logging.error("Error in processing lab 10: %s" % error)
+                        task6["status"] = "done"
 
         lab["tasks"].append(task1)
         lab["tasks"].append(task2)
         lab["tasks"].append(task3)
         lab["tasks"].append(task4)
         lab["tasks"].append(task5)
+        lab["tasks"].append(task6)
         labs.append(lab)
         return labs

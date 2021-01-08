@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import kubernetes
+from kubernetes.client.rest import ApiException
 
 
 class KubeCluster():
@@ -22,36 +23,83 @@ class KubeCluster():
             return reader.read()
 
     def listPods(self):
-        return self.coreV1.list_namespaced_pod(self.ns)
+        try:
+            return self.coreV1.list_namespaced_pod(self.ns)
+        except ApiException:
+            return None
+
+    def readPodByLabel(self, label):
+        try:
+            for pod in self.coreV1.list_namespaced_pod(
+                        self.ns, label_selector=label).items:
+                return self.coreV1.read_namespaced_pod(
+                        pod.metadata.name, self.ns)
+        except ApiException:
+            return None
 
     def readDeployment(self, name):
-        return self.appsV1.read_namespaced_deployment(name, self.ns)
+        try:
+            return self.appsV1.read_namespaced_deployment(name, self.ns)
+        except ApiException:
+            return None
+
+    def readReplicationControllerByPodLabel(self, label):
+        try:
+            for pod in self.coreV1.list_namespaced_pod(
+                        self.ns, label_selector=label).items:
+                result = self.coreV1.read_namespaced_pod(
+                            pod.metadata.name, self.ns)
+                for ref in result.metadata.owner_references:
+                    return self.coreV1.read_namespaced_replication_controller(
+                            ref.name, self.ns)
+        except ApiException:
+            return None
 
     def readDeploymentScale(self, name):
-        return self.appsV1.read_namespaced_deployment_scale(name, self.ns)
+        try:
+            return self.appsV1.read_namespaced_deployment_scale(name, self.ns)
+        except ApiException:
+            return None
 
     def readService(self, name):
-        return self.coreV1.read_namespaced_service(name, self.ns)
+        try:
+            return self.coreV1.read_namespaced_service(name, self.ns)
+        except ApiException:
+            return None
 
-    def readPodLogs(self, labelName):
+    def readPodLogs(self, label):
         logList = []
-        label = "app=%s" % labelName
-        for pod in self.coreV1.list_namespaced_pod(self.ns,
-                                                   label_selector=label).items:
-            log = self.coreV1.read_namespaced_pod_log(pod.metadata.name,
-                                                      self.ns)
-            logList.append(log)
-        return logList
+        try:
+            for pod in self.coreV1.list_namespaced_pod(
+                        self.ns, label_selector=label).items:
+                log = self.coreV1.read_namespaced_pod_log(
+                        pod.metadata.name, self.ns)
+                logList.append(log)
+            return logList
+        except ApiException:
+            return None
 
     def readVolumeClaim(self, name):
-        return self.coreV1.read_namespaced_persistent_volume_claim(name,
-                                                                   self.ns)
+        try:
+            return self.coreV1.read_namespaced_persistent_volume_claim(
+                    name, self.ns)
+        except ApiException:
+            return None
 
     def readStatefulSet(self, name):
-        return self.appsV1.read_namespaced_stateful_set(name, self.ns)
+        try:
+            return self.appsV1.read_namespaced_stateful_set(name, self.ns)
+        except ApiException:
+            return None
 
     def readConfigMap(self, name):
-        return self.coreV1.read_namespaced_config_map(name, self.ns)
+        try:
+            return self.coreV1.read_namespaced_config_map(name, self.ns)
+        except ApiException:
+            return None
 
     def readJob(self, name):
-        return self.batchV1.read_namespaced_job(name, self.ns)
+        try:
+            return self.batchV1.read_namespaced_job(name, self.ns)
+        except ApiException:
+            return None
