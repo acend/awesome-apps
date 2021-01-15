@@ -19,6 +19,9 @@ class Progress():
         self.kube = None
         self.deploy_name = "example-web-python"
 
+    def getNamespace(self):
+        return self.kube.getNamespace()
+
     def checkProgress(self, db):
         try:
             self.kube = KubeCluster()
@@ -148,7 +151,7 @@ class Progress():
         if deploy:
             if deploy.spec.template.spec.volumes:
                 for vol in deploy.spec.template.spec.volumes:
-                    if vol.name == "mariadb-persistent-storage":
+                    if vol.name == "mariadb-data":
                         task2["status"] = "done"
 
         lab["tasks"].append(task1)

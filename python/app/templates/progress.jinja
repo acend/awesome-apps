@@ -13,15 +13,18 @@
 					</div>
 				</p>
 				{% else %}
-				<p>To activate, you have to create this rolebinding in your namespace:</p>
-				<code>kubectl create rolebinding progress --clusterrole=view --serviceaccount=&#60;namespace&#62;:default --namespace=&#60;namespace&#62;</code>
+				<p>To activate, you have to create this rolebinding in your namespace.</p>
+				<p>For Kubernetes use:</p>
+				<code>kubectl create rolebinding progress --clusterrole=view --serviceaccount={{ ns }}:default --namespace={{ ns }}</code>
+				<p>For OpenShift use:</p>
+				<code>oc create rolebinding progress --clusterrole=view --serviceaccount={{ ns }}:default --namespace={{ ns }}</code>
 				{% endif %}
   			</div>
 		</div>
 		{% for lab in labs %}
 		<div class="tile">
 			<div class="tile-icon">
-				<figure class="avatar avatar-lg mr-2" data-initial="L{{ loop.index + 5 }}"></i></figure>
+				<figure class="avatar avatar-lg mr-2" data-initial="L{{ loop.index + 4 }}"></i></figure>
 			</div>
 
 			<div class="tile-content">
@@ -30,7 +33,7 @@
 
 				<p>
 				{% for task in lab.tasks %}
-					<span class="label label-rounded {{ 'label-success' if task.status=="done" else 'label-error' }}">
+					<span class="label label-rounded {{ 'label-success' if task.status=="done" else 'label-secondary' }}">
 				    {{ task.name }}
 					</span>
 				{% endfor %}
