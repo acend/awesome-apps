@@ -33,7 +33,7 @@
 
 				<p>
 				{% for task in lab.tasks %}
-					<span class="label label-rounded {{ 'label-success' if task.status=="done" else 'label-secondary' }}">
+					<span class="label tooltip label-rounded {{ 'label-success' if task.status=="done" else 'label-secondary' }}" data-tooltip="{{ task.desc }}">
 				    {{ task.name }}
 					</span>
 				{% endfor %}

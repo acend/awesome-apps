@@ -6,18 +6,18 @@ class LabTroubleshooting(Lab):
 
     def __init__(self, kube, db):
 
-        self.name = "Lab 7"
+        self.name = "Lab 6"
         self.desc = "Troubleshooting (badge can toggle)"
 
-        super().__init__(kube, db, self.name, self.desc)
+        Lab.__init__(self, kube, db, self.name, self.desc)
 
-        self.addTask(Task1(kube))
+        self.addTask(LabTroubleshootingTask1(kube))
 
 
-class Task1(Task):
+class LabTroubleshootingTask1(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "Local access"
         self.desc = "Sample description"

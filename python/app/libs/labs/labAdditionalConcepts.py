@@ -9,24 +9,24 @@ class LabAdditionalConcepts(Lab):
 
     def __init__(self, kube, db):
 
-        self.name = "Lab 8"
-        self.desc = "Database"
+        self.name = "Lab 9"
+        self.desc = "Additional Concepts"
 
-        super().__init__(kube, db, self.name, self.desc)
+        Lab.__init__(self, kube, db, self.name, self.desc)
 
-        self.addTask(Task1(kube))
-        self.addTask(Task2(kube))
-        self.addTask(Task3(kube))
-        self.addTask(Task4(kube))
-        self.addTask(Task5(kube))
-        self.addTask(Task6(kube))
-        self.addTask(Task7(kube))
+        self.addTask(LabAdditionalConceptsTask1(kube))
+        self.addTask(LabAdditionalConceptsTask2(kube))
+        self.addTask(LabAdditionalConceptsTask3(kube))
+        self.addTask(LabAdditionalConceptsTask4(kube))
+        self.addTask(LabAdditionalConceptsTask5(kube))
+        self.addTask(LabAdditionalConceptsTask6(kube))
+        self.addTask(LabAdditionalConceptsTask7(kube))
 
 
-class Task1(Task):
+class LabAdditionalConceptsTask1(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "StatefulSets: Created"
         self.desc = "Sample description"
@@ -37,10 +37,10 @@ class Task1(Task):
             self.setDone()
 
 
-class Task2(Task):
+class LabAdditionalConceptsTask2(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "StatefulSets: Scaled"
         self.desc = "Sample description"
@@ -51,10 +51,10 @@ class Task2(Task):
             self.setDone()
 
 
-class Task3(Task):
+class LabAdditionalConceptsTask3(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "CronJobs and Jobs"
         self.desc = "Sample description"
@@ -64,10 +64,10 @@ class Task3(Task):
             self.setDone()
 
 
-class Task4(Task):
+class LabAdditionalConceptsTask4(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "ConfigMap: Created"
         self.desc = "Sample description"
@@ -77,10 +77,10 @@ class Task4(Task):
             self.setDone()
 
 
-class Task5(Task):
+class LabAdditionalConceptsTask5(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "ConfigMap: Created"
         self.desc = "Sample description"
@@ -97,10 +97,10 @@ class Task5(Task):
                         self.setDone()
 
 
-class Task6(Task):
+class LabAdditionalConceptsTask6(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "InitContainer"
         self.desc = "Sample description"
@@ -114,10 +114,10 @@ class Task6(Task):
                         self.setDone()
 
 
-class Task7(Task):
+class LabAdditionalConceptsTask7(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "Sidecar containers"
         self.desc = "Sample description"

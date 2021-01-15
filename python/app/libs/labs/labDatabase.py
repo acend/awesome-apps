@@ -8,20 +8,20 @@ class LabDatabase(Lab):
 
     def __init__(self, kube, db):
 
-        self.name = "Lab 8"
-        self.desc = "Database"
+        self.name = "Lab 7"
+        self.desc = "Attaching a Database"
 
-        super().__init__(kube, db, self.name, self.desc)
+        Lab.__init__(self, kube, db, self.name, self.desc)
 
-        self.addTask(Task1(kube))
-        self.addTask(Task2(kube))
-        self.addTask(Task3(kube))
+        self.addTask(LabDatabaseTask1(kube))
+        self.addTask(LabDatabaseTask2(kube))
+        self.addTask(LabDatabaseTask3(kube))
 
 
-class Task1(Task):
+class LabDatabaseTask1(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "Service"
         self.desc = "Sample description"
@@ -31,10 +31,10 @@ class Task1(Task):
             self.setDone()
 
 
-class Task2(Task):
+class LabDatabaseTask2(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "Deployment"
         self.desc = "Sample description"
@@ -47,10 +47,10 @@ class Task2(Task):
             self.setDone()
 
 
-class Task3(Task):
+class LabDatabaseTask3(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "Dump Import"
         self.desc = "Sample description"

@@ -9,19 +9,19 @@ class LabPersistentStorage(Lab):
 
     def __init__(self, kube, db):
 
-        self.name = "Lab 9"
+        self.name = "Lab 8"
         self.desc = "Persistent Storage"
 
-        super().__init__(kube, db, self.name, self.desc)
+        Lab.__init__(self, kube, db, self.name, self.desc)
 
-        self.addTask(Task1(kube))
-        self.addTask(Task2(kube))
+        self.addTask(LabPersistentStorageTask1(kube))
+        self.addTask(LabPersistentStorageTask2(kube))
 
 
-class Task1(Task):
+class LabPersistentStorageTask1(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "Created"
         self.desc = "Sample description"
@@ -31,10 +31,10 @@ class Task1(Task):
             self.setDone()
 
 
-class Task2(Task):
+class LabPersistentStorageTask2(Task):
 
     def __init__(self, kube):
-        super().__init(kube)
+        Task.__init__(self, kube)
 
         self.name = "Mounted"
         self.desc = "Sample description"

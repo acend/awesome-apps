@@ -1,18 +1,23 @@
+import logging
+
+
 class Lab():
 
     kube = None
     db = None
     name = ""
     desc = ""
-    tasks = []
+    tasks = list()
 
     def __init__(self, kube, db, name, desc):
         self.kube = kube
         self.db = db
         self.name = name
         self.desc = desc
+        self.tasks = list()
 
     def addTask(self, task):
+
         self.tasks.append(task)
 
     def getName(self):
@@ -26,9 +31,9 @@ class Lab():
             task.check()
 
     def getStatus(self):
-        return [task.getStatus() for task in self.tasks]
+        return [task for task in self.tasks]
 
-    def countTaks(self):
+    def countTasks(self):
         return len(self.tasks)
 
     def countDone(self):

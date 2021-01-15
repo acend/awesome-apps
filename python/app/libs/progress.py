@@ -15,11 +15,6 @@ logging.basicConfig(stream=sys.stdout,
                     level=logging.INFO,
                     format="%(asctime)s %(levelname)-5s: %(message)s")
 
-job_template = {"name": "", "desc": "", "tasks": []}
-
-
-DEPLOY_NAME = "example-web-python"
-
 
 class Progress():
 
@@ -29,11 +24,11 @@ class Progress():
         self.db = None
         self.kube = None
 
-        self.labs.append(LabSizing(self.kube))
-        self.labs.append(LabTroubleshooting(self.kube))
-        self.labs.append(LabDatabase(self.kube))
-        self.labs.append(LabPersistentStorage(self.kube))
-        self.labs.append(LabAdditionalConcepts(self.kube))
+        self.labs.append(LabSizing(self.kube, self.db))
+        self.labs.append(LabTroubleshooting(self.kube, self.db))
+        self.labs.append(LabDatabase(self.kube, self.db))
+        self.labs.append(LabPersistentStorage(self.kube, self.db))
+        self.labs.append(LabAdditionalConcepts(self.kube, self.db))
 
     def getNamespace(self):
         return self.kube.getNamespace()
@@ -47,7 +42,7 @@ class Progress():
             return []
 
         if self.checkPermission():
-            return [lab.getStatus() for lab in self.labs]
+            return [lab for lab in self.labs]
         else:
             return []
 
