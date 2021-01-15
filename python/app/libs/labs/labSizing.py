@@ -38,7 +38,7 @@ class LabSizingTask2(Task):
         self.desc = "Sample description"
 
     def check(self):
-        replicas = self.kube.readDeploymentScale(self.deploy_name)
+        replicas = self.kube.readDeploymentScale("example-web-python")
         if replicas:
             if replicas.spec.replicas == 3:
                 self.setDone()

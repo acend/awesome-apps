@@ -89,7 +89,7 @@ class LabAdditionalConceptsTask5(Task):
         deploy = self.kube.readDeployment("spring-boot-example")
         if not deploy:  # openshift case
             logging.info("10.5 openshift case")
-            deploy = self.kube.readDeployment(self.deploy_name)
+            deploy = self.kube.readDeployment("example-web-python")
         if deploy:
             if deploy.spec.template.spec.volumes:
                 for vol in deploy.spec.template.spec.volumes:
@@ -106,7 +106,7 @@ class LabAdditionalConceptsTask6(Task):
         self.desc = "Sample description"
 
     def check(self):
-        deploy = self.kube.readDeployment(self.deploy_name)
+        deploy = self.kube.readDeployment("example-web-python")
         if deploy:
             if deploy.spec.template.spec.init_containers:
                 for pod in deploy.spec.template.spec.init_containers:

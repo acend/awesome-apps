@@ -24,12 +24,6 @@ class Progress():
         self.db = None
         self.kube = None
 
-        self.labs.append(LabSizing(self.kube, self.db))
-        self.labs.append(LabTroubleshooting(self.kube, self.db))
-        self.labs.append(LabDatabase(self.kube, self.db))
-        self.labs.append(LabPersistentStorage(self.kube, self.db))
-        self.labs.append(LabAdditionalConcepts(self.kube, self.db))
-
     def getNamespace(self):
         return self.kube.getNamespace()
 
@@ -42,6 +36,15 @@ class Progress():
             return []
 
         if self.checkPermission():
+
+            self.labs.append(LabSizing(self.kube, self.db))
+            self.labs.append(LabTroubleshooting(self.kube, self.db))
+            self.labs.append(LabDatabase(self.kube, self.db))
+            self.labs.append(LabPersistentStorage(self.kube, self.db))
+            self.labs.append(LabAdditionalConcepts(self.kube, self.db))
+
+            for lab in self.labs:
+                lab.check()
             return [lab for lab in self.labs]
         else:
             return []
@@ -60,6 +63,9 @@ class Progress():
 
         task_sum = sum([lab.countTasks() for lab in self.labs])
         task_done = sum([lab.countDone() for lab in self.labs])
+
+        logging.info("Tasks {}".format(task_sum))
+        logging.info("Done {}".format(task_done))
 
         if not self.labs:
             return 0
