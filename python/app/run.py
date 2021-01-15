@@ -99,7 +99,8 @@ def progress():
     progress = Progress()
     status = progress.checkProgress(db=Hello)
     perc = progress.calcPercentage(status)
-    return render_template("progress.jinja", labs=status, perc=perc)
+    ns = progress.getNamespace()
+    return render_template("progress.jinja", labs=status, perc=perc, ns=ns)
 
 
 if __name__ == "__main__":
