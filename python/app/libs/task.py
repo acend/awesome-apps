@@ -5,10 +5,11 @@ class Task():
     status = "open"
     desc = ""
 
-    def __init__(self, kube, name="", desc=""):
+    def __init__(self, kube, db=None, name="", desc=""):
         self.name = name
         self.desc = desc
         self.kube = kube
+        self.db = db
 
     def getName(self):
         return self.name

@@ -15,7 +15,7 @@ class LabDatabase(Lab):
 
         self.addTask(LabDatabaseTask1(kube))
         self.addTask(LabDatabaseTask2(kube))
-        self.addTask(LabDatabaseTask3(kube))
+        self.addTask(LabDatabaseTask3(kube, db))
 
 
 class LabDatabaseTask1(Task):
@@ -49,15 +49,15 @@ class LabDatabaseTask2(Task):
 
 class LabDatabaseTask3(Task):
 
-    def __init__(self, kube):
-        Task.__init__(self, kube)
+    def __init__(self, kube, db):
+        Task.__init__(self, kube, db)
 
         self.name = "Dump Import"
         self.desc = "Sample description"
 
     def check(self):
         try:
-            if Lab.db.query.filter_by(name='Daniel').first():
+            if self.db.query.filter_by(name='Daniel').first():
                 self.setDone()
         except Exception as x:
             logging.error("DB issue: %s" % x)
