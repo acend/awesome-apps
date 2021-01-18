@@ -96,8 +96,8 @@ def health():
 
 @app.route("/progress")
 def progress():
-    progress = Progress()
-    status = progress.checkProgress(db=Hello)
+    progress = Progress(database=Hello)
+    status = progress.checkProgress()
     perc = progress.calcPercentage()
     ns = progress.getNamespace()
 

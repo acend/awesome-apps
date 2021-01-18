@@ -1,8 +1,6 @@
 FROM alpine
 LABEL maintainer="acend"
 
-
-
 RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
     pip3 install --upgrade pip && \
     pip3 install flask flask_sqlalchemy prometheus_flask_exporter kubernetes flake8 --no-cache-dir

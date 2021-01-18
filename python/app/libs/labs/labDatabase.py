@@ -57,7 +57,7 @@ class LabDatabaseTask3(Task):
 
     def check(self):
         try:
-            if self.db.query.filter_by(name='Daniel').first():
+            if Lab.db.query.filter_by(name='Daniel').first():
                 self.setDone()
-        except Exception:
-            pass
+        except Exception as x:
+            logging.error("DB issue: %s" % x)

@@ -20,23 +20,22 @@ class Progress():
 
     labs = []
 
-    def __init__(self):
-        self.db = None
+    def __init__(self, database):
+        self.db = database
         self.kube = None
 
     def getNamespace(self):
         return self.kube.getNamespace()
 
-    def checkProgress(self, db):
+    def checkProgress(self):
         try:
             self.kube = KubeCluster()
-            self.db = db
         except Exception as error:
             logging.error("Error in checkProgress: %s" % error)
             return []
 
         if self.checkPermission():
-
+            self.labs.clear()
             self.labs.append(LabSizing(self.kube, self.db))
             self.labs.append(LabTroubleshooting(self.kube, self.db))
             self.labs.append(LabDatabase(self.kube, self.db))

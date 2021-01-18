@@ -40,6 +40,7 @@ class LabPersistentStorageTask2(Task):
         self.desc = "Sample description"
 
     def check(self):
+        name = "mariadb-data"
         deploy = self.kube.readDeployment("mariadb")
         if not deploy:  # openshift case
             logging.info("9.2 openshift case")
@@ -48,5 +49,6 @@ class LabPersistentStorageTask2(Task):
         if deploy:
             if deploy.spec.template.spec.volumes:
                 for vol in deploy.spec.template.spec.volumes:
-                    if vol.name == "mariadb-data":
-                        self.setDone()
+                    if vol.persistent_volume_claim:
+                        if vol.persistent_volume_claim.claim_name == name:
+                            self.setDone()
