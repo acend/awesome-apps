@@ -22,7 +22,7 @@ class LabSizingTask1(Task):
         Task.__init__(self, kube)
 
         self.name = "Deployment"
-        self.desc = "Sample description"
+        self.desc = "deployment example-web-python exist"
 
     def check(self):
         if self.kube.readDeployment("example-web-python"):
@@ -35,7 +35,7 @@ class LabSizingTask2(Task):
         Task.__init__(self, kube)
 
         self.name = "Scaled"
-        self.desc = "Sample description"
+        self.desc = "deployment example-web-python is scaled to 3"
 
     def check(self):
         replicas = self.kube.readDeploymentScale("example-web-python")

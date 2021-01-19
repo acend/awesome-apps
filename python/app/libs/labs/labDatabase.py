@@ -24,7 +24,7 @@ class LabDatabaseTask1(Task):
         Task.__init__(self, kube)
 
         self.name = "Service"
-        self.desc = "Sample description"
+        self.desc = "service mariadb exists"
 
     def check(self):
         if self.kube.readService("mariadb"):
@@ -37,7 +37,7 @@ class LabDatabaseTask2(Task):
         Task.__init__(self, kube)
 
         self.name = "Deployment"
-        self.desc = "Sample description"
+        self.desc = "deployment mariadb exist"
 
     def check(self):
         if self.kube.readDeployment("mariadb"):
@@ -53,7 +53,7 @@ class LabDatabaseTask3(Task):
         Task.__init__(self, kube, db)
 
         self.name = "Dump Import"
-        self.desc = "Sample description"
+        self.desc = "db contains an specific entry"
 
     def check(self):
         try:

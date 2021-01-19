@@ -29,7 +29,7 @@ class LabAdditionalConceptsTask1(Task):
         Task.__init__(self, kube)
 
         self.name = "StatefulSets: Created"
-        self.desc = "Sample description"
+        self.desc = "statefulset nginx-cluster exist"
 
     def check(self):
         replicas = self.kube.readStatefulSet("nginx-cluster")
@@ -43,7 +43,7 @@ class LabAdditionalConceptsTask2(Task):
         Task.__init__(self, kube)
 
         self.name = "StatefulSets: Scaled"
-        self.desc = "Sample description"
+        self.desc = "statefulset nginx-cluster is scaled to 3"
 
     def check(self):
         replicas = self.kube.readStatefulSet("nginx-cluster")
@@ -57,7 +57,7 @@ class LabAdditionalConceptsTask3(Task):
         Task.__init__(self, kube)
 
         self.name = "CronJobs and Jobs"
-        self.desc = "Sample description"
+        self.desc = "job database-dump exist"
 
     def check(self):
         if self.kube.readJob("database-dump"):
@@ -70,7 +70,7 @@ class LabAdditionalConceptsTask4(Task):
         Task.__init__(self, kube)
 
         self.name = "ConfigMap: Created"
-        self.desc = "Sample description"
+        self.desc = "configmap javaconfiguration is created"
 
     def check(self):
         if self.kube.readConfigMap("javaconfiguration"):
@@ -83,7 +83,7 @@ class LabAdditionalConceptsTask5(Task):
         Task.__init__(self, kube)
 
         self.name = "ConfigMap: Created"
-        self.desc = "Sample description"
+        self.desc = "deployment has a configmap mounted"
 
     def check(self):
         deploy = self.kube.readDeployment("spring-boot-example")
@@ -103,7 +103,7 @@ class LabAdditionalConceptsTask6(Task):
         Task.__init__(self, kube)
 
         self.name = "InitContainer"
-        self.desc = "Sample description"
+        self.desc = "initcontainer wait-for-db exist in deployment"
 
     def check(self):
         deploy = self.kube.readDeployment("example-web-python")
@@ -120,7 +120,7 @@ class LabAdditionalConceptsTask7(Task):
         Task.__init__(self, kube)
 
         self.name = "Sidecar containers"
-        self.desc = "Sample description"
+        self.desc = "mariadb has a second pod with the mysqld-exporter"
 
     def check(self):
         deploy = self.kube.readDeployment("mariadb")

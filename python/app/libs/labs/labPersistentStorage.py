@@ -24,7 +24,7 @@ class LabPersistentStorageTask1(Task):
         Task.__init__(self, kube)
 
         self.name = "Created"
-        self.desc = "Sample description"
+        self.desc = "pvc has been created"
 
     def check(self):
         if self.kube.readVolumeClaim("mariadb-data"):
@@ -37,7 +37,7 @@ class LabPersistentStorageTask2(Task):
         Task.__init__(self, kube)
 
         self.name = "Mounted"
-        self.desc = "Sample description"
+        self.desc = "pvc is mounted to mariadb"
 
     def check(self):
         name = "mariadb-data"

@@ -20,7 +20,7 @@ class LabTroubleshootingTask1(Task):
         Task.__init__(self, kube)
 
         self.name = "Local access"
-        self.desc = "Sample description"
+        self.desc = "the pod logfile contains the entry 127.0.0.1"
 
     def check(self):
 
