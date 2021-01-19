@@ -96,10 +96,11 @@ def health():
 
 @app.route("/progress")
 def progress():
-    progress = Progress()
-    status = progress.checkProgress(db=Hello)
-    perc = progress.calcPercentage(status)
+    progress = Progress(database=Hello)
+    status = progress.checkProgress()
+    perc = progress.calcPercentage()
     ns = progress.getNamespace()
+
     return render_template("progress.jinja", labs=status, perc=perc, ns=ns)
 
 
