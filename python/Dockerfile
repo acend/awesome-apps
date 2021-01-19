@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.13
 LABEL maintainer="acend"
 
 RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
