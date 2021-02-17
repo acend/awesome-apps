@@ -1,4 +1,4 @@
-FROM golang:1.15
+FROM golang:1.16
 COPY main.go /go
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build 
 
