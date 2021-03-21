@@ -82,7 +82,7 @@ class LabAdditionalConceptsTask5(Task):
     def __init__(self, kube):
         Task.__init__(self, kube)
 
-        self.name = "ConfigMap: Created"
+        self.name = "ConfigMap: Mounted"
         self.desc = "deployment has a configmap mounted"
 
     def check(self):
@@ -120,7 +120,7 @@ class LabAdditionalConceptsTask7(Task):
         Task.__init__(self, kube)
 
         self.name = "Sidecar containers"
-        self.desc = "mariadb has a second pod with the mysqld-exporter"
+        self.desc = "second pod with the mysqld-exporter exist"
 
     def check(self):
         deploy = self.kube.readDeployment("mariadb")
