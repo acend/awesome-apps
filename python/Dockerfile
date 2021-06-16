@@ -1,6 +1,7 @@
 FROM alpine:3.13
 LABEL maintainer="acend"
 
+
 RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
     pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir flask \
