@@ -1,4 +1,4 @@
-FROM alpine:3.13
+FROM alpine
 LABEL maintainer="acend"
 
 RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
@@ -14,7 +14,8 @@ EXPOSE 5000
 COPY app/ /app
 
 RUN adduser -D web && \
-    chown -R web /app && \
+    chown -R web:root /app && \
+    chmod -R 2775 /app && \
     \
     python3 -m compileall /app/*.py && \
     python3 -m compileall /app/libs/*.py && \

@@ -3,8 +3,8 @@
 
 import random
 import logging
-import os
 import sys
+import os
 from libs.progress import Progress
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify
