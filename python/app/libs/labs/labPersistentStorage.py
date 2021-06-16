@@ -40,15 +40,18 @@ class LabPersistentStorageTask2(Task):
         self.desc = "pvc is mounted to mariadb"
 
     def check(self):
-        name = "mariadb-data"
         deploy = self.kube.readDeployment("mariadb")
         if not deploy:  # openshift case
             logging.info("9.2 openshift case")
             deploy = self.kube.readReplicationControllerByPodLabel(
                         "deploymentconfig=mariadb")
+
         if deploy:
-            if deploy.spec.template.spec.volumes:
-                for vol in deploy.spec.template.spec.volumes:
-                    if vol.persistent_volume_claim:
-                        if vol.persistent_volume_claim.claim_name == name:
+            if not deploy.spec.template.spec.containers:
+                return
+            for con in deploy.spec.template.spec.containers:
+                if con.volume_mounts:
+                    for vol in con.volume_mounts:
+                        if (vol.name == "mariadb-data" and
+                           vol.mount_path == "/var/lib/mysql"):
                             self.setDone()
