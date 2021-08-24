@@ -3,6 +3,7 @@
 ORG="acend"
 APP="example-web-python"
 VER="build"
+PUSH="$1"
 
 cleanup() {
     echo -e "\nCleanup:\n"
@@ -26,3 +27,9 @@ curl -s localhost:5000/health
 
 echo -e "\n\nLogs:\n"
 docker logs $APP
+
+# push
+if [ "$PUSH" == "push" ]; then
+  docker tag $ORG/$APP:$VER $ORG/$APP:latest
+  docker push $ORG/$APP:latest
+fi
