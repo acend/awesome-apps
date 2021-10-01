@@ -24,10 +24,10 @@ class LabDatabaseTask1(Task):
         Task.__init__(self, kube)
 
         self.name = "Service"
-        self.desc = "service mariadb exists"
+        self.desc = "service mariadb-svc exists"
 
     def check(self):
-        if self.kube.readService("mariadb"):
+        if self.kube.readService("mariadb-svc"):
             self.setDone()
 
 

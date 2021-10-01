@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ORG="acend"
 APP="example-web-python"
 VER="build"

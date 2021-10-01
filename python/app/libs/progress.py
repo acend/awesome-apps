@@ -25,7 +25,9 @@ class Progress():
         self.kube = None
 
     def getNamespace(self):
-        return self.kube.getNamespace()
+        if self.kube:
+            return self.kube.getNamespace()
+        return ""
 
     def checkProgress(self):
         try:

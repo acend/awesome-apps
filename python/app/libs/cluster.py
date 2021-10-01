@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import kubernetes
 from kubernetes.client.rest import ApiException
 
@@ -8,12 +9,17 @@ from kubernetes.client.rest import ApiException
 class KubeCluster():
 
     def __init__(self):
-        kubernetes.config.load_incluster_config()
-        self.ns = self.getNamespace()
-        self.coreV1 = kubernetes.client.CoreV1Api()
-        self.appsV1 = kubernetes.client.AppsV1Api()
-        self.betaV1 = kubernetes.client.ExtensionsV1beta1Api()
-        self.batchV1 = kubernetes.client.BatchV1Api()
+        self.debug = os.getenv("DEBUG", "false")
+        try:
+            kubernetes.config.load_incluster_config()
+        except Exception:
+            print("ERROR: could not load k8s config")
+        else:
+            self.ns = self.getNamespace()
+            self.coreV1 = kubernetes.client.CoreV1Api()
+            self.appsV1 = kubernetes.client.AppsV1Api()
+            self.betaV1 = kubernetes.client.ExtensionsV1beta1Api()
+            self.batchV1 = kubernetes.client.BatchV1Api()
 
     def getNamespace(self, nsFile=""):
         if not nsFile:
@@ -65,6 +71,8 @@ class KubeCluster():
         try:
             return self.coreV1.read_namespaced_service(name, self.ns)
         except ApiException:
+            if self.debug == "true":
+                print(f"DEBUG: could not get service {name}")
             return None
 
     def readPodLogs(self, label):
@@ -77,6 +85,8 @@ class KubeCluster():
                 logList.append(log)
             return logList
         except ApiException:
+            if self.debug == "true":
+                print(f"DEBUG: could not get label {label}")
             return None
 
     def readVolumeClaim(self, name):
@@ -84,6 +94,8 @@ class KubeCluster():
             return self.coreV1.read_namespaced_persistent_volume_claim(
                     name, self.ns)
         except ApiException:
+            if self.debug == "true":
+                print(f"DEBUG: could not get claim {name}")
             return None
 
     def readStatefulSet(self, name):

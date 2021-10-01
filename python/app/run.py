@@ -101,6 +101,9 @@ def progress():
     perc = progress.calcPercentage()
     ns = progress.getNamespace()
 
+    if request.headers.get("flat"):
+        return {"percent": perc, "labs": status}
+
     return render_template("progress.jinja", labs=status, perc=perc, ns=ns)
 
 
