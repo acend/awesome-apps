@@ -14,7 +14,7 @@ jobs:
           submodules: recursive
       -
         name: Delete go tag on Quay
-        id: delete_tag
+        id: delete_go_tag
         env:
           PR_NUMBER: '${{ github.event.pull_request.number }}'
           QUAYIO_API_TOKEN: '${{ secrets.QUAYIO_API_TOKEN }}'
@@ -22,7 +22,7 @@ jobs:
           curl -X DELETE -H "Authorization: Bearer ${QUAYIO_API_TOKEN}" https://quay.io/api/v1/repository/example-web-go/tag/pr-${PR_NUMBER}
       -
         name: Delete python tag on Quay
-        id: delete_tag
+        id: delete_python_tag
         env:
           PR_NUMBER: '${{ github.event.pull_request.number }}'
           QUAYIO_API_TOKEN: '${{ secrets.QUAYIO_API_TOKEN }}'
