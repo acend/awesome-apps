@@ -19,17 +19,17 @@ func main() {
 }
 
 func HelloServer(w http.ResponseWriter, r *http.Request) {
-        fmt.Println("handling main request with color: ", token)
-	fmt.Fprintf(w, "<h1 style=color:#%s>Hello golang</h1><h2>ID: %s</h2>", token, token)
+    fmt.Println("handling main request with color: ", token)
+    fmt.Fprintf(w, "<h1 style=color:#%s>Hello golang</h1><h2>ID: %s</h2>", token, token)
 }
 
 func PodServer(w http.ResponseWriter, r *http.Request) {
-        fmt.Println("handling pod request")
-	fmt.Fprintf(w, "%s", getEnv("HOSTNAME", "not-set"))
+    fmt.Println("handling pod request")
+    fmt.Fprintf(w, "%s", getEnv("HOSTNAME", "not-set"))
 }
 
 func HealthServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "ok")
+    fmt.Fprintf(w, "ok")
 }
 
 func getEnv(key, fallback string) string {
@@ -40,9 +40,9 @@ func getEnv(key, fallback string) string {
 }
 
 func randToken(n int) (string, error) {
-	bytes := make([]byte, n)
-	if _, err := rand.Read(bytes); err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(bytes), nil
+    bytes := make([]byte, n)
+    if _, err := rand.Read(bytes); err != nil {
+        return "", err
+    }
+    return hex.EncodeToString(bytes), nil
 }
