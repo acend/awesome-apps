@@ -34,7 +34,7 @@ jobs:
           context: go
           push: true
           tags: |
-            quay.io/acend/example-web-go:pr-${{ github.event.pull_request.number }}
+            quay.io/acend/example-web-go:latest
       -
         name: Run vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -59,7 +59,7 @@ jobs:
           context: python
           push: true
           tags: |
-            quay.io/acend/example-web-python:pr-${{ github.event.pull_request.number }}
+            quay.io/acend/example-web-python:latest
       -
         name: Run vulnerability scanner
         uses: aquasecurity/trivy-action@master
