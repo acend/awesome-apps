@@ -19,7 +19,7 @@ jobs:
           PR_NUMBER: '${{ github.event.pull_request.number }}'
           QUAYIO_API_TOKEN: '${{ secrets.QUAYIO_API_TOKEN }}'
         run: |
-          curl -X DELETE -H "Authorization: Bearer ${QUAYIO_API_TOKEN}" https://quay.io/api/v1/repository/example-web-go/tag/pr-${PR_NUMBER}
+          curl -X DELETE -H "Authorization: Bearer ${QUAYIO_API_TOKEN}" https://quay.io/api/v1/repository/acend/example-web-go/tag/pr-${PR_NUMBER}
       -
         name: Delete python tag on Quay
         id: delete_python_tag
@@ -27,4 +27,4 @@ jobs:
           PR_NUMBER: '${{ github.event.pull_request.number }}'
           QUAYIO_API_TOKEN: '${{ secrets.QUAYIO_API_TOKEN }}'
         run: |
-          curl -X DELETE -H "Authorization: Bearer ${QUAYIO_API_TOKEN}" https://quay.io/api/v1/repository/example-web-python/tag/pr-${PR_NUMBER}
+          curl -X DELETE -H "Authorization: Bearer ${QUAYIO_API_TOKEN}" https://quay.io/api/v1/repository/acend/example-web-python/tag/pr-${PR_NUMBER}
