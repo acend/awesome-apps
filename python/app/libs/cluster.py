@@ -18,7 +18,6 @@ class KubeCluster():
             self.ns = self.getNamespace()
             self.coreV1 = kubernetes.client.CoreV1Api()
             self.appsV1 = kubernetes.client.AppsV1Api()
-            self.betaV1 = kubernetes.client.ExtensionsV1beta1Api()
             self.batchV1 = kubernetes.client.BatchV1Api()
 
     def getNamespace(self, nsFile=""):
