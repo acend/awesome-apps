@@ -1,4 +1,4 @@
-FROM golang:1.17 AS golang
+FROM golang:1.18 AS golang
 COPY main.go /go
 RUN GO111MODULE=auto CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
