@@ -26,20 +26,15 @@
 			<div class="tile-icon">
 				<figure class="avatar avatar-lg mr-2" data-initial="L{{ loop.index + 4 }}"></i></figure>
 			</div>
-
 			<div class="tile-content">
 				<!--<p class="tile-title">{{ lab.name }}</p>-->
 				<p class="tile-title">{{ lab.desc }}</p>
-
 				<p>
 				{% for task in lab.tasks %}
-					<span class="label tooltip label-rounded {{ 'label-success' if task.status=="done" else 'label-secondary' }}" data-tooltip="{{ task.desc }}">
-				    {{ task.name }}
-					</span>
+					<span class="label tooltip label-rounded {{ 'label-success' if task.status=="done" else 'label-secondary' }}" data-tooltip="{{ task.desc }}">{{ task.name }}</span>
 				{% endfor %}
 				</p>
 			</div>
-
 		</div>
 		{% endfor %}
 {%- endblock %}

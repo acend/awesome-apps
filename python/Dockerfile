@@ -3,9 +3,9 @@ LABEL maintainer="acend"
 
 RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
     pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir flask flask_sqlalchemy \
+    pip3 install --no-cache-dir wheel flask flask_sqlalchemy \
 				prometheus_flask_exporter \
-				flake8 \
+                                flake8 pylint pylint-flask pylint-flask-sqlalchemy \
                  		"sqlalchemy<1.4" \
 		 		"kubernetes<22"
 
@@ -18,7 +18,8 @@ RUN adduser -D web && \
     \
     python3 -m compileall /app/*.py && \
     python3 -m compileall /app/libs/*.py && \
-    flake8 /app/
+    flake8 /app/ && \
+    pylint --load-plugins pylint_flask_sqlalchemy,pylint_flask -E /app
 
 WORKDIR /app
 USER web
