@@ -7,7 +7,7 @@ RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
 				prometheus_flask_exporter \
 				flake8 \
                  		"sqlalchemy<1.4" \
-		 		kubernetes
+		 		"kubernetes<22"
 
 EXPOSE 5000
 COPY app/ /app
