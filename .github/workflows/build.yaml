@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.QUAYIO_TOKEN }}
       -
         name: Build go app image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: go
           push: true
@@ -52,7 +52,7 @@ jobs:
           path: trivy-results.txt
       -
         name: Build python app image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: python
           push: true
