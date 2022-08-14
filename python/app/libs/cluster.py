@@ -114,3 +114,9 @@ class KubeCluster():
             return self.batchV1.read_namespaced_job(name, self.ns)
         except ApiException:
             return None
+
+    def readPod(self, name):
+        try:
+            return self.coreV1.read_namespaced_pod(name, self.ns)
+        except ApiException:
+            return None

@@ -133,3 +133,16 @@ class LabAdditionalConceptsTask7(Task):
                 for pod in deploy.spec.template.spec.containers:
                     if pod.name == "mysqld-exporter":
                         self.setDone()
+
+
+class LabAdditionalConceptsTask8(Task):
+
+    def __init__(self, kube):
+        Task.__init__(self, kube)
+
+        self.name = "Security context"
+        self.desc = "security context pod exists"
+
+    def check(self):
+        if self.kube.readPod("security-context-demo"):
+            self.setDone()
