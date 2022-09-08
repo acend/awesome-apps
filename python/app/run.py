@@ -17,6 +17,7 @@ database_config = os.getenv('MYSQL_URI', database_file)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_config
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 print("Using DB: ", database_config)
 
 logging.basicConfig(stream=sys.stdout,

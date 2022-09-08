@@ -17,6 +17,7 @@ RUN adduser -D web && \
     \
     python3 -m compileall /app/*.py && \
     python3 -m compileall /app/libs/*.py && \
+    python3 -m compileall /app/libs/labs/*.py && \
     flake8 /app/ && \
     pylint --load-plugins pylint_flask_sqlalchemy,pylint_flask -E /app
 
