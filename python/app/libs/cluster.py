@@ -19,6 +19,7 @@ class KubeCluster():
             self.coreV1 = kubernetes.client.CoreV1Api()
             self.appsV1 = kubernetes.client.AppsV1Api()
             self.batchV1 = kubernetes.client.BatchV1Api()
+            self.networkV1 = kubernetes.client.NetworkingV1Api()
 
     def getNamespace(self, nsFile=""):
         if not nsFile:
@@ -112,5 +113,17 @@ class KubeCluster():
     def readJob(self, name):
         try:
             return self.batchV1.read_namespaced_job(name, self.ns)
+        except ApiException:
+            return None
+
+    def readPod(self, name):
+        try:
+            return self.coreV1.read_namespaced_pod(name, self.ns)
+        except ApiException:
+            return None
+
+    def readNetworkPolicy(self, name):
+        try:
+            return self.networkV1.read_namespaced_network_policy(name, self.ns)
         except ApiException:
             return None
