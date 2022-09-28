@@ -6,7 +6,7 @@ RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
     pip3 install --no-cache-dir wheel flask flask_sqlalchemy \
                                 prometheus_flask_exporter \
                                 flake8 pylint pylint-flask pylint-flask-sqlalchemy \
-                                "sqlalchemy<1.4" "kubernetes<22"
+                                "sqlalchemy<1.4" "kubernetes<=24"
 
 EXPOSE 5000
 COPY app/ /app
