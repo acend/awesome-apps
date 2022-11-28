@@ -1,12 +1,12 @@
-FROM alpine:3.16
+FROM docker.io/alpine:3.17
 LABEL maintainer="acend"
 
 RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
     pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir wheel flask flask_sqlalchemy \
-                                prometheus_flask_exporter \
-                                flake8 pylint pylint-flask pylint-flask-sqlalchemy \
-                                "sqlalchemy<1.4" "kubernetes<=24"
+    pip3 install --no-cache-dir wheel flask flask_sqlalchemy sqlalchemy \
+                                prometheus_flask_exporter flake8 \
+                                pylint pylint-flask pylint-flask-sqlalchemy \
+                                "kubernetes<=24"
 
 EXPOSE 5000
 COPY app/ /app
