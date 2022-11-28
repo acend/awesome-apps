@@ -1,8 +1,8 @@
-FROM golang:1.19 AS golang
+FROM docker.io/golang:1.19 AS golang
 COPY main.go /go
 RUN GO111MODULE=auto CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
-FROM alpine:3.16
+FROM docker.io/alpine:3.16
 LABEL maintainer="acend"
 
 EXPOSE 5000
