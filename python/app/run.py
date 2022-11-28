@@ -44,7 +44,8 @@ class Hello(db.Model):
         return "<Name: {}>".format(self.title)
 
 
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 
 @app.route("/")
