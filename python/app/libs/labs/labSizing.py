@@ -22,10 +22,10 @@ class LabSizingTask1(Task):
         Task.__init__(self, kube)
 
         self.name = "Deployment"
-        self.desc = "deployment example-web-python exist"
+        self.desc = "deployment example-web-app exist"
 
     def check(self):
-        if self.kube.readDeployment("example-web-python"):
+        if self.kube.readDeployment("example-web-app"):
             self.setDone()
 
 
@@ -35,10 +35,10 @@ class LabSizingTask2(Task):
         Task.__init__(self, kube)
 
         self.name = "Scaled"
-        self.desc = "deployment example-web-python is scaled to 3"
+        self.desc = "deployment example-web-app is scaled to 3"
 
     def check(self):
-        replicas = self.kube.readDeploymentScale("example-web-python")
+        replicas = self.kube.readDeploymentScale("example-web-app")
         if replicas:
             if replicas.spec.replicas == 3:
                 self.setDone()

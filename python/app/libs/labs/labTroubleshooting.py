@@ -24,7 +24,7 @@ class LabTroubleshootingTask1(Task):
 
     def check(self):
 
-        podLogList = self.kube.readPodLogs("app=%s" % "example-web-python")
+        podLogList = self.kube.readPodLogs("app=%s" % "example-web-app")
         if podLogList:
             for podLog in podLogList:
                 if podLog.find("127.0.0.1") > 0:
