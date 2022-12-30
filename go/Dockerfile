@@ -1,8 +1,8 @@
-FROM registry.puzzle.ch/docker.io/golang:latest AS golang
+FROM docker.io/golang:1.19 AS golang
 COPY main.go /go
 RUN GO111MODULE=auto CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
-FROM registry.puzzle.ch/docker.io/alpine:latest
+FROM docker.io/alpine:3.17
 LABEL maintainer="acend"
 
 EXPOSE 5000
