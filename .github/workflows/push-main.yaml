@@ -15,6 +15,15 @@ jobs:
         with:
           submodules: recursive
       - 
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            golang:
+              - 'go/**'
+            python:
+              - 'python/**'
+      - 
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - 
@@ -29,6 +38,7 @@ jobs:
           password: ${{ secrets.QUAYIO_TOKEN }}
       -
         name: Build go app image
+        if: steps.filter.outputs.golang == 'true'
         uses: docker/build-push-action@v4
         with:
           context: go
@@ -37,6 +47,7 @@ jobs:
             quay.io/acend/example-web-go:latest
       -
         name: Run vulnerability scanner
+        if: steps.filter.outputs.golang == 'true'
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'quay.io/acend/example-web-go:latest'
@@ -48,12 +59,14 @@ jobs:
           severity: 'CRITICAL,HIGH'
       -
         name: Archive vulnerability scan results
+        if: steps.filter.outputs.golang == 'true'
         uses: actions/upload-artifact@v3
         with:
           name: trivy-results-main
           path: trivy-results.txt
       -
         name: Build python app image
+        if: steps.filter.outputs.python == 'true'
         uses: docker/build-push-action@v4
         with:
           context: python
@@ -62,6 +75,7 @@ jobs:
             quay.io/acend/example-web-python:latest
       -
         name: Run vulnerability scanner
+        if: steps.filter.outputs.python == 'true'
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'quay.io/acend/example-web-python:latest'
@@ -73,6 +87,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
       -
         name: Archive vulnerability scan results
+        if: steps.filter.outputs.python == 'true'
         uses: actions/upload-artifact@v3
         with:
           name: trivy-results-main
