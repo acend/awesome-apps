@@ -29,6 +29,7 @@ jobs:
         name: Build go app image
         uses: docker/build-push-action@v4
         with:
+          files: go/**
           context: go
           push: true
           tags: |
@@ -37,6 +38,7 @@ jobs:
         name: Run vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
+          files: go/**
           image-ref: 'quay.io/acend/example-web-go:pr-${{ github.event.pull_request.number }}'
           format: 'table'
           output: 'trivy-results.txt'
@@ -48,12 +50,14 @@ jobs:
         name: Archive vulnerability scan results
         uses: actions/upload-artifact@v3
         with:
+          files: go/**
           name: trivy-results-main
           path: trivy-results.txt
       -
         name: Build python app image
         uses: docker/build-push-action@v4
         with:
+          files: python/**
           context: python
           push: true
           tags: |
@@ -62,6 +66,7 @@ jobs:
         name: Run vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
+          files: python/**
           image-ref: 'quay.io/acend/example-web-python:pr-${{ github.event.pull_request.number }}'
           format: 'table'
           output: 'trivy-results.txt'
@@ -73,5 +78,6 @@ jobs:
         name: Archive vulnerability scan results
         uses: actions/upload-artifact@v3
         with:
+          files: python/**
           name: trivy-results-main
           path: trivy-results.txt

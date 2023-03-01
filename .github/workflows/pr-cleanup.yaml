@@ -15,6 +15,8 @@ jobs:
       -
         name: Delete go tag on Quay
         id: delete_go_tag
+        with:
+          files: go/**
         env:
           PR_NUMBER: '${{ github.event.pull_request.number }}'
           QUAYIO_API_TOKEN: '${{ secrets.QUAYIO_API_TOKEN }}'
@@ -23,6 +25,8 @@ jobs:
       -
         name: Delete python tag on Quay
         id: delete_python_tag
+        with:
+          files: python/**
         env:
           PR_NUMBER: '${{ github.event.pull_request.number }}'
           QUAYIO_API_TOKEN: '${{ secrets.QUAYIO_API_TOKEN }}'
