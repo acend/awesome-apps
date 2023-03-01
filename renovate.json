@@ -2,5 +2,19 @@
   "extends": [
     "config:base",
     ":automergeMinor"
+  ],
+  "packageRules": [
+    {
+      "matchPaths": ["python/"],
+      "groupName": "python§"
+    },
+    {
+      "matchPaths": ["go/"],
+      "groupName": "golang"
+    },
+    {
+      "matchPaths": ["java-quarkus/"],
+      "groupName": "java"
+    }
   ]
 }
