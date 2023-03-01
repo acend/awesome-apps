@@ -12,11 +12,19 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: recursive
+      - 
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            golang:
+              - 'go/**'
+            python:
+              - 'python/**'
       -
         name: Delete go tag on Quay
+        if: steps.filter.outputs.golang == 'true'
         id: delete_go_tag
-        with:
-          files: go/**
         env:
           PR_NUMBER: '${{ github.event.pull_request.number }}'
           QUAYIO_API_TOKEN: '${{ secrets.QUAYIO_API_TOKEN }}'
@@ -24,6 +32,7 @@ jobs:
           curl -X DELETE -H "Authorization: Bearer ${QUAYIO_API_TOKEN}" https://quay.io/api/v1/repository/acend/example-web-go/tag/pr-${PR_NUMBER}
       -
         name: Delete python tag on Quay
+        if: steps.filter.outputs.python == 'true'
         id: delete_python_tag
         with:
           files: python/**

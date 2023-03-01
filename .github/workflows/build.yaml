@@ -12,6 +12,15 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: recursive
+      - 
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            golang:
+              - 'go/**'  
+            python:
+              - 'python/**'  
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -27,18 +36,18 @@ jobs:
           password: ${{ secrets.QUAYIO_TOKEN }}
       -
         name: Build go app image
+        if: steps.filter.outputs.golang == 'true'
         uses: docker/build-push-action@v4
         with:
-          files: go/**
           context: go
           push: true
           tags: |
             quay.io/acend/example-web-go:pr-${{ github.event.pull_request.number }}
       -
         name: Run vulnerability scanner
+        if: steps.filter.outputs.golang == 'true'
         uses: aquasecurity/trivy-action@master
         with:
-          files: go/**
           image-ref: 'quay.io/acend/example-web-go:pr-${{ github.event.pull_request.number }}'
           format: 'table'
           output: 'trivy-results.txt'
@@ -48,25 +57,25 @@ jobs:
           severity: 'CRITICAL,HIGH'
       -
         name: Archive vulnerability scan results
+        if: steps.filter.outputs.golang == 'true'
         uses: actions/upload-artifact@v3
         with:
-          files: go/**
           name: trivy-results-main
           path: trivy-results.txt
       -
         name: Build python app image
+        if: steps.filter.outputs.python == 'true'
         uses: docker/build-push-action@v4
         with:
-          files: python/**
           context: python
           push: true
           tags: |
             quay.io/acend/example-web-python:pr-${{ github.event.pull_request.number }}
       -
         name: Run vulnerability scanner
+        if: steps.filter.outputs.python == 'true'
         uses: aquasecurity/trivy-action@master
         with:
-          files: python/**
           image-ref: 'quay.io/acend/example-web-python:pr-${{ github.event.pull_request.number }}'
           format: 'table'
           output: 'trivy-results.txt'
@@ -76,8 +85,8 @@ jobs:
           severity: 'CRITICAL,HIGH'
       -
         name: Archive vulnerability scan results
+        if: steps.filter.outputs.python == 'true'
         uses: actions/upload-artifact@v3
         with:
-          files: python/**
           name: trivy-results-main
           path: trivy-results.txt
