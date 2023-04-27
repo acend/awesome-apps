@@ -93,7 +93,11 @@ def pod():
 
 @app.route("/health")
 def health():
-    return "ok"
+    try:
+        Hello.query.all()
+        return "ok", 204
+    except Exception:
+        return "nok", 500
 
 
 @app.route("/progress")
