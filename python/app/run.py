@@ -18,7 +18,7 @@ database_config = os.getenv('MYSQL_URI', database_file)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_config
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-print("Using DB: ", database_config)
+print("Using DB:", database_config)
 
 logging.basicConfig(stream=sys.stdout,
                     level=logging.INFO,
@@ -50,7 +50,9 @@ with app.app_context():
 
 @app.route("/")
 def index():
-    return render_template('index.jinja', hex_number=hex_number)
+    return render_template('index.jinja',
+                           hex_number=hex_number,
+                           debug=database_config)
 
 
 @app.route("/hellos", methods=['GET'])
@@ -95,7 +97,7 @@ def pod():
 def health():
     try:
         Hello.query.all()
-        return "ok", 204
+        return "ok", 200
     except Exception:
         return "nok", 500
 
