@@ -14,9 +14,17 @@
     {{ m.css("/static/css/spectre-icons.min.css") }}
   </head>
   <body>
+    <header class="navbar bg-secondary">
+      <section class="navbar-section">
+        <div class="navbar-brand m-2"><b>acend</b></div>
+      </section>
+      <section class="navbar-section">
+        <div class="text-tiny m-2">{{debug}}</div>
+      </section>
+    </header>
     <div class="container">
       <div class="columns">
-        <div class="column col-1 bg-secondary">
+        <div class="column col-1">
         </div>
         <div class="column col-10">
           {%- block content %}
