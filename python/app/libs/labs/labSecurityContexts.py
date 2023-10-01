@@ -24,10 +24,16 @@ class LabAdditionalConceptsTask1(Task):
 
         self.name = "Deny policy: created"
         self.desc = "network policy exists"
+        self.objn = "backend-ingress-deny"
 
     def check(self):
-        if self.kube.readNetworkPolicy("backend-ingress-deny"):
+        if self.kube.readNetworkPolicy(self.objn):
             self.setDone()
+        else:
+            logging.info("netpol openshift case")
+            ns = f"{self.kube.ns}-netpol"
+            if self.kube.readNetworkPolicy(self.objn, ns):
+                self.setDone()
 
 
 class LabAdditionalConceptsTask2(Task):
@@ -37,10 +43,16 @@ class LabAdditionalConceptsTask2(Task):
 
         self.name = "Allow policy: created"
         self.desc = "network policy exists"
+        self.objn = "backend-allow-ingress-frontend"
 
     def check(self):
-        if self.kube.readNetworkPolicy("backend-allow-ingress-frontend"):
+        if self.kube.readNetworkPolicy(self.objn):
             self.setDone()
+        else:
+            logging.info("netpol openshift case")
+            ns = f"{self.kube.ns}-netpol"
+            if self.kube.readNetworkPolicy(self.objn, ns):
+                self.setDone()
 
 
 class LabAdditionalConceptsTask3(Task):
