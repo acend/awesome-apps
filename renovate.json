@@ -5,6 +5,10 @@
   ],
   "packageRules": [
     {
+      "matchManagers": ["github-actions"],
+      "groupName": "{{manager}}"
+    },
+    {
       "matchPaths": ["python/"],
       "groupName": "python§"
     },
