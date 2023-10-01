@@ -14,10 +14,18 @@
 				</p>
 				{% else %}
 				<p>To activate, you have to create this rolebinding in your namespace.</p>
-				<p>For Kubernetes use:</p>
-				<code>kubectl create rolebinding progress --clusterrole=view --serviceaccount={{ ns }}:default --namespace={{ ns }}</code>
-				<p>For OpenShift use:</p>
-				<code>oc create rolebinding progress --clusterrole=view --serviceaccount={{ ns }}:default --namespace={{ ns }}</code>
+				<p>For <b>Kubernetes</b> use:</p>
+				<code>
+					kubectl create rolebinding progress --clusterrole=view --serviceaccount={{ ns }}:default --namespace={{ ns }}
+				</code>
+				<p>For <b>OpenShift</b> use:</p>
+				<code>
+					oc create rolebinding progress --clusterrole=view --serviceaccount={{ ns }}:default --namespace={{ ns }}
+				</code>
+				<p>For <b>OpenShift</b> netpolicies in different namespaces use this as well:</p>
+				<code>
+					oc create rolebinding progress --clusterrole=view --serviceaccount={{ ns }}:default --namespace={{ ns }}-netpol
+				</code>
 				{% endif %}
   			</div>
 		</div>

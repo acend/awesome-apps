@@ -4,7 +4,7 @@ LABEL maintainer="acend"
 RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
     pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir wheel flask flask_sqlalchemy sqlalchemy \
-                                prometheus_flask_exporter "kubernetes<=24"
+                                prometheus_flask_exporter "kubernetes<=25"
 
 EXPOSE 5000
 COPY app/ /app
