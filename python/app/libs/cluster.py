@@ -122,8 +122,10 @@ class KubeCluster():
         except ApiException:
             return None
 
-    def readNetworkPolicy(self, name, ns=self.ns):
+    def readNetworkPolicy(self, name, ns=None):
         try:
+            if ns is None:
+                ns = self.ns
             return self.networkV1.read_namespaced_network_policy(name, ns)
         except ApiException:
             return None

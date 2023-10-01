@@ -1,4 +1,6 @@
 
+import logging
+
 from libs.lab import Lab
 from libs.task import Task
 
