@@ -28,6 +28,12 @@ class KubeCluster():
         with open(nsFile, "r") as reader:
             return reader.read()
 
+    def readNamespace(self, name):
+        try:
+            return self.coreV1.read_namespace(name)
+        except ApiException:
+            return None
+
     def listPods(self):
         try:
             return self.coreV1.list_namespaced_pod(self.ns)

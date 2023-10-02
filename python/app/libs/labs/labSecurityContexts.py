@@ -10,13 +10,14 @@ class LabSecurityContexts(Lab):
     def __init__(self, kube, db):
 
         self.name = "Lab 10"
-        self.desc = "Security Contexts"
+        self.desc = "Security"
 
         Lab.__init__(self, kube, db, self.name, self.desc)
 
         self.addTask(LabAdditionalConceptsTask1(kube))
         self.addTask(LabAdditionalConceptsTask2(kube))
-        self.addTask(LabAdditionalConceptsTask3(kube))
+        if kube.readNamespace(f"{kube.ns}-netpol") is None:
+            self.addTask(LabAdditionalConceptsTask3(kube))
 
 
 class LabAdditionalConceptsTask1(Task):
