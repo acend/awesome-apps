@@ -18,40 +18,9 @@ class LabAdditionalConcepts(Lab):
         self.addTask(LabAdditionalConceptsTask2(kube))
         self.addTask(LabAdditionalConceptsTask3(kube))
         self.addTask(LabAdditionalConceptsTask4(kube))
-        self.addTask(LabAdditionalConceptsTask5(kube))
-        self.addTask(LabAdditionalConceptsTask6(kube))
-        self.addTask(LabAdditionalConceptsTask7(kube))
 
 
 class LabAdditionalConceptsTask1(Task):
-
-    def __init__(self, kube):
-        Task.__init__(self, kube)
-
-        self.name = "StatefulSets: Created"
-        self.desc = "statefulset nginx-cluster exist"
-
-    def check(self):
-        replicas = self.kube.readStatefulSet("nginx-cluster")
-        if replicas:
-            self.setDone()
-
-
-class LabAdditionalConceptsTask2(Task):
-
-    def __init__(self, kube):
-        Task.__init__(self, kube)
-
-        self.name = "StatefulSets: Scaled"
-        self.desc = "statefulset nginx-cluster is scaled to 3"
-
-    def check(self):
-        replicas = self.kube.readStatefulSet("nginx-cluster")
-        if replicas and replicas.spec.replicas == 3:
-            self.setDone()
-
-
-class LabAdditionalConceptsTask3(Task):
 
     def __init__(self, kube):
         Task.__init__(self, kube)
@@ -64,7 +33,7 @@ class LabAdditionalConceptsTask3(Task):
             self.setDone()
 
 
-class LabAdditionalConceptsTask4(Task):
+class LabAdditionalConceptsTask2(Task):
 
     def __init__(self, kube):
         Task.__init__(self, kube)
@@ -77,7 +46,7 @@ class LabAdditionalConceptsTask4(Task):
             self.setDone()
 
 
-class LabAdditionalConceptsTask5(Task):
+class LabAdditionalConceptsTask3(Task):
 
     def __init__(self, kube):
         Task.__init__(self, kube)
@@ -97,7 +66,7 @@ class LabAdditionalConceptsTask5(Task):
                         self.setDone()
 
 
-class LabAdditionalConceptsTask6(Task):
+class LabAdditionalConceptsTask4(Task):
 
     def __init__(self, kube):
         Task.__init__(self, kube)
@@ -111,25 +80,4 @@ class LabAdditionalConceptsTask6(Task):
             if deploy.spec.template.spec.init_containers:
                 for pod in deploy.spec.template.spec.init_containers:
                     if pod.name == "wait-for-db":
-                        self.setDone()
-
-
-class LabAdditionalConceptsTask7(Task):
-
-    def __init__(self, kube):
-        Task.__init__(self, kube)
-
-        self.name = "Sidecar containers"
-        self.desc = "second pod with the mysqld-exporter exist"
-
-    def check(self):
-        deploy = self.kube.readDeployment("mariadb")
-        if not deploy:  # openshift case
-            logging.info("10.6 openshift case")
-            deploy = self.kube.readReplicationControllerByPodLabel(
-                        "deploymentconfig=mariadb")
-        if deploy:
-            if deploy.spec.template.spec.containers:
-                for pod in deploy.spec.template.spec.containers:
-                    if pod.name == "mysqld-exporter":
                         self.setDone()

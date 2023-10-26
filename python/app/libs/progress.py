@@ -10,7 +10,6 @@ from libs.labs.labTroubleshooting import LabTroubleshooting
 from libs.labs.labDatabase import LabDatabase
 from libs.labs.labPersistentStorage import LabPersistentStorage
 from libs.labs.labAdditionalConcepts import LabAdditionalConcepts
-from libs.labs.labSecurityContexts import LabSecurityContexts
 
 logging.basicConfig(stream=sys.stdout,
                     level=logging.INFO,
@@ -44,7 +43,6 @@ class Progress():
             self.labs.append(LabDatabase(self.kube, self.db))
             self.labs.append(LabPersistentStorage(self.kube, self.db))
             self.labs.append(LabAdditionalConcepts(self.kube, self.db))
-            self.labs.append(LabSecurityContexts(self.kube, self.db))
 
             for lab in self.labs:
                 lab.check()
