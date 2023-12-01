@@ -2,7 +2,7 @@ FROM docker.io/golang:1.21 AS golang
 COPY main.go /go
 RUN GO111MODULE=auto CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
-FROM docker.io/alpine:3.18.4
+FROM docker.io/alpine:3.18.5
 LABEL maintainer="acend"
 
 EXPOSE 5000
