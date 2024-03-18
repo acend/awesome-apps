@@ -13,7 +13,7 @@ jobs:
         with:
           submodules: recursive
       - 
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         id: filter
         with:
           filters: |
@@ -58,7 +58,7 @@ jobs:
       -
         name: Archive vulnerability scan results
         if: steps.filter.outputs.golang == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: trivy-results-main
           path: trivy-results.txt
@@ -86,7 +86,7 @@ jobs:
       -
         name: Archive vulnerability scan results
         if: steps.filter.outputs.python == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: trivy-results-main
           path: trivy-results.txt
