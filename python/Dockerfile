@@ -1,4 +1,4 @@
-FROM docker.io/alpine:3.18
+FROM docker.io/alpine:3.19
 LABEL maintainer="acend"
 
 RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
