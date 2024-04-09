@@ -1,10 +1,13 @@
-FROM docker.io/alpine:3.18
+FROM docker.io/alpine:3.19
 LABEL maintainer="acend"
 
-RUN apk --no-cache add py3-pip py3-cryptography py3-mysqlclient curl && \
-    pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir wheel flask flask_sqlalchemy sqlalchemy \
-                                prometheus_flask_exporter "kubernetes<=25"
+ENV PIP_BREAK_SYSTEM_PACKAGES 1
+RUN apk --no-cache add curl py3-pip py3-cryptography py3-mysqlclient && \
+    pip3 install --no-cache-dir \
+        "flask==3.0.3" \
+        "Flask-SQLAlchemy==3.1.1" \
+        "prometheus-flask-exporter==0.23.0" \
+        "kubernetes==26.1.0"
 
 EXPOSE 5000
 COPY app/ /app
@@ -13,7 +16,8 @@ RUN adduser -D web && \
     chown -R web:root /app && \
     chmod -R 2775 /app && \
     \
-    pip3 install --no-cache-dir flake8 pylint pylint-flask pylint-flask-sqlalchemy && \
+    pip3 install --no-cache-dir \
+	flake8 pylint pylint-flask pylint-flask-sqlalchemy && \
     python3 -m compileall /app/*.py && \
     python3 -m compileall /app/libs/*.py && \
     python3 -m compileall /app/libs/labs/*.py && \
