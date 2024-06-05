@@ -1,4 +1,4 @@
-FROM docker.io/alpine:3.19
+FROM docker.io/alpine:3.20.0
 LABEL maintainer="acend"
 
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
@@ -7,7 +7,7 @@ RUN apk --no-cache add curl py3-pip py3-cryptography py3-mysqlclient && \
         "flask==3.0.3" \
         "Flask-SQLAlchemy==3.1.1" \
         "prometheus-flask-exporter==0.23.0" \
-        "kubernetes==26.1.0"
+        "kubernetes<=27"
 
 EXPOSE 5000
 COPY app/ /app
