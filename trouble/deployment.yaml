@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1beta
+kind: Deployment
+metadata:
+  name: ng-web
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: ng-web
+  template:
+    metadata:
+      labels:
+        app: ng-web-app
+    spec:
+      containers:
+        - image: nginx
+          name: web
+          ports:
+            - containerPort: 80
+              name: http
+          resources:
+            limits:
+              cpu: "24"            
+              memory: "96Gi"
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthy
+              port: 80
+            periodSeconds: 30
+            failureThreshold: 1

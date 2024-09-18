@@ -50,7 +50,7 @@ jobs:
         with:
           image-ref: 'quay.io/acend/example-web-go:pr-${{ github.event.pull_request.number }}'
           format: 'table'
-          output: 'trivy-results.txt'
+          output: 'trivy-results-go.txt'
           exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os'
@@ -60,8 +60,8 @@ jobs:
         if: steps.filter.outputs.golang == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: trivy-results-main
-          path: trivy-results.txt
+          name: trivy-results-go-main
+          path: trivy-results-go.txt
       -
         name: Build python app image
         if: steps.filter.outputs.python == 'true'
@@ -78,7 +78,7 @@ jobs:
         with:
           image-ref: 'quay.io/acend/example-web-python:pr-${{ github.event.pull_request.number }}'
           format: 'table'
-          output: 'trivy-results.txt'
+          output: 'trivy-results-py.txt'
           exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os'
@@ -88,5 +88,5 @@ jobs:
         if: steps.filter.outputs.python == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: trivy-results-main
-          path: trivy-results.txt
+          name: trivy-results-py-main
+          path: trivy-results-py.txt
