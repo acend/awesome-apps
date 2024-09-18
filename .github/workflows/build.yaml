@@ -37,7 +37,7 @@ jobs:
       -
         name: Build go app image
         if: steps.filter.outputs.golang == 'true'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: go
           push: true
@@ -65,7 +65,7 @@ jobs:
       -
         name: Build python app image
         if: steps.filter.outputs.python == 'true'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: python
           push: true
