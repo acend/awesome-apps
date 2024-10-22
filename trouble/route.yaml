@@ -1,0 +1,11 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: example-web-go
+spec:
+  host: trouble.apps.training.cluster.tim-koko.ch
+  port:
+    targetPort: 5000-tcp
+  to:
+    kind: Service
+    name: gn-cip
