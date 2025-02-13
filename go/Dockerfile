@@ -1,4 +1,4 @@
-FROM docker.io/golang:1.23 AS golang
+FROM docker.io/golang:1.24 AS golang
 COPY main.go /go
 RUN GO111MODULE=auto CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
