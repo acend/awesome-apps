@@ -9,7 +9,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
       - 
@@ -58,7 +58,7 @@ jobs:
       -
         name: Archive vulnerability scan results
         if: steps.filter.outputs.golang == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: trivy-results-go-main
           path: trivy-results-go.txt
@@ -86,7 +86,7 @@ jobs:
       -
         name: Archive vulnerability scan results
         if: steps.filter.outputs.python == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: trivy-results-py-main
           path: trivy-results-py.txt
