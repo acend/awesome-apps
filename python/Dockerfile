@@ -17,7 +17,7 @@ RUN adduser -D web && \
     chmod -R 2775 /app && \
     \
     pip3 install --no-cache-dir \
-	flake8 pylint pylint-flask pylint-flask-sqlalchemy && \
+    flake8 pylint pylint-flask pylint-flask-sqlalchemy && \
     python3 -m compileall /app/*.py && \
     python3 -m compileall /app/libs/*.py && \
     python3 -m compileall /app/libs/labs/*.py && \
