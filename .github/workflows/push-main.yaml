@@ -15,7 +15,7 @@ jobs:
         with:
           submodules: recursive
       - 
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
@@ -25,13 +25,13 @@ jobs:
               - 'python/**'
       - 
         name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
       - 
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - 
         name: Login to Quay.io Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: quay.io
           username: ${{ secrets.QUAYIO_USERNAME }}
@@ -39,7 +39,7 @@ jobs:
       -
         name: Build go app image
         if: steps.filter.outputs.golang == 'true'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: go
           push: true
@@ -60,14 +60,14 @@ jobs:
       -
         name: Archive vulnerability scan results
         if: steps.filter.outputs.golang == 'true'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: trivy-results-main
           path: trivy-results.txt
       -
         name: Build python app image
         if: steps.filter.outputs.python == 'true'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: python
           push: true
@@ -88,7 +88,7 @@ jobs:
       -
         name: Archive vulnerability scan results
         if: steps.filter.outputs.python == 'true'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: trivy-results-main
           path: trivy-results.txt
