@@ -1,4 +1,4 @@
-FROM docker.io/alpine:3.24.0
+FROM docker.io/alpine:3.24.1
 LABEL maintainer="acend"
 
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
